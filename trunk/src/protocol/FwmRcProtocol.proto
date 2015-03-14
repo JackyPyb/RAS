@@ -1,0 +1,118 @@
+package FwmRcProto;
+
+//需要共同使用的message
+
+message FrameworkInstanceInfo
+{
+    required uint32 framework_id = 1; //框架ID
+    required uint32 framework_instance_id = 2; //框架实例ID
+}
+
+message GpuResourceInfo
+{
+    required string gpu_name = 1;//GPU名, “*”表示任意
+    optional uint32 gpu_mem_size = 2; //GPU内存大小
+}
+
+message ResourceInfo
+{
+    required double cpu_num = 1; //逻辑cpu个数
+    required uint32 cpu_mem_size = 2; //内存大小，单位为MB
+    optional uint32 gpu_num = 3; // 物理GPU个数
+	repeated GpuResourceInfo gpu_resource_info = 4;//GPU资源信息
+}
+
+message EachModuleRequestOrReturnResourceInfo
+{
+    required uint32 resource_request_or_return_to_module_id = 1; //添加或归还资源的模块ID
+    optional ResourceInfo resource_info = 2; //资源信息
+}
+
+message NetAddress
+{
+    required string ip = 1;
+    optional uint32 port = 2;
+}
+
+//分别针对需要protobuf传递参数的协议进行定义
+
+//MSG_FWM_RC_REGISTER
+message Register
+{
+    required FrameworkInstanceInfo framework_instance_info = 1;//框架实例信息
+    required uint32 self_module_id = 2; //自身模块的ID
+    optional NetAddress data_search_entry = 3;//业务数据查询的入口（包含IP和PORT）
+}
+
+//MSG_FWM_RC_REQUEST_START_SLAVE
+message EachModuleResourceInfo
+{
+	required string start_module_name = 1; //要启动的模块的名称
+    required string ip = 2;//机器IP,“*”表示任意机器;如果是从多个机器中选择（非全部），则填写IP地址，中间以“,”分割，如“192.168.1.50,192.168.1.51”；下同
+    optional ResourceInfo resource_info = 3;//资源信息
+	optional uint32 listen_port_num = 4; //模块需要的监听端口个数
+}
+
+message RequestStartSlave
+{
+    required FrameworkInstanceInfo framework_instance_info = 1;//框架实例信息
+    required uint32 self_module_id = 2; //自身模块的ID
+    repeated EachModuleResourceInfo start_module_resource_info = 3;//每个模块的资源量
+	optional NetAddress FWM_net_address = 4;//启动后连接FW Master的IP和PORT
+}
+
+//MSG_FWM_RC_REQUEST_START_SLAVE_ACK
+message RequestStartSlaveAck
+{
+	repeated uint32 module_id = 1; //启动成功的模块的ID
+}
+
+//MSG_FWM_RC_REQUEST_TASK_RESOURCE
+message RequestTaskResource
+{
+    required FrameworkInstanceInfo framework_instance_info = 1;//框架实例信息
+    required uint32 self_module_id = 2; //自身模块的ID
+    repeated EachModuleRequestOrReturnResourceInfo module_add_resource_info = 3;//每个模块添加的资源量
+}
+
+//MSG_FWM_RC_REQUEST_TASK_RESOURCE_ACK
+message RequestTaskResourceAck
+{
+	repeated uint32 exceed_module_id = 1; //
+}
+
+//MSG_FWM_RC_RETURN_TASK_RESOURCE
+message ReturnTaskResource
+{
+    required FrameworkInstanceInfo framework_instance_info = 1;//框架实例信息
+    required uint32 self_module_id = 2; //自身模块的ID
+    repeated EachModuleRequestOrReturnResourceInfo module_return_resource_info = 3;//每个模块添加的资源量
+}
+
+//MSG_FWM_RC_STOP_MODULE
+message StopModule
+{
+    required FrameworkInstanceInfo framework_instance_info = 1;//框架实例信息
+    required uint32 self_module_id = 2; //自身模块的ID
+    repeated uint32 stop_module_id = 3;//各个申请关闭的模块的ID
+}
+
+//MSG_FWM_RC_STOP_MODULE_ACK
+message StopModuleAck
+{
+	repeated uint32 stop_module_id = 1; //关闭模块的ID
+}
+
+//MSG_FWM_RC_SEND_HEARTBEAT
+message HeartBeatInfo
+{
+    required FrameworkInstanceInfo framework_instance_info = 1;//框架实例信息
+    required uint32 self_module_id = 2; //自身模块的ID
+}
+
+//MSG_FWM_RC_CLOSE_FRAMEWORK_INSTANCE
+message CloseFrameworkInstanceInfo
+{
+    required FrameworkInstanceInfo framework_instance_info = 1;//框架实例信息
+    required uint32 self_module_id = 2; //自身模块的ID
+}

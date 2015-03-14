@@ -1,0 +1,21 @@
+#ifndef _BASEREQ_H_
+#define _BASEREQ_H_
+
+#include <netinet/in.h>
+
+#include "common/comm/BaseHeader.h"
+
+struct BaseRequest
+{
+    BaseRequest() {}
+    virtual ~BaseRequest() {}
+};
+
+struct InReq
+{
+    MsgHeader m_msgHeader;
+    char* ioBuf;
+    sockaddr_in oppoAddr;
+};
+
+#endif

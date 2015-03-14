@@ -1,0 +1,23 @@
+package RcSasProto;
+
+//MSG_RC_SAS_ADD_BUSINESS_ENTRY
+message AddBusinessEntry
+{
+	required string framework_instance_name = 1; //框架实例名称
+	required string entry_ip = 2; //框架实例业务入口的IP
+	required uint32 entry_port = 3; //框架实例业务入口的PORT
+}
+
+//MSG_RC_SAS_UPDATE_BUSINESS_ENTRY
+message UpdateBusinessEntry
+{
+	required string framework_instance_name = 1; //框架实例名称
+	required string entry_ip = 2; //框架实例业务入口的IP
+	required uint32 entry_port = 3; //框架实例业务入口的PORT
+}
+
+//MSG_RC_SAS_DELETE_BUSINESS_ENTRY
+message DeleteBusinessEntry
+{
+	required string framework_instance_name = 1; //框架实例名称
+}

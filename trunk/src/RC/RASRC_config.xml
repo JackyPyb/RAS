@@ -1,0 +1,26 @@
+<CONFIG>
+	<MODULE_CONFIG>
+		<MUTABLE>
+			<START_IP></START_IP>
+			<LISTEN_PORT>
+				<RASNC_RASRC_PORT>10086</RASNC_RASRC_PORT>
+                <RASFWM_RASRC_PORT>10087</RASFWM_RASRC_PORT>
+                <RASSAS_RASRC_PORT>10088</RASSAS_RASRC_PORT>
+				<RASAL_RASRC_PORT>10089</RASAL_RASRC_PORT>
+			</LISTEN_PORT>
+            <MIN_NC_NUM>1</MIN_NC_NUM>
+		</MUTABLE>
+		<UNMUTABLE>		
+			<Sys>
+				<EpollFD>1000</EpollFD>
+			</Sys>
+			<TimeOut>
+			 	<NCHeartBeatTimeOut>60</NCHeartBeatTimeOut>
+			 	<NCHeartBeatRetryNum>1</NCHeartBeatRetryNum>
+			 	<FWMRootHeartBeatTimeOut>60</FWMRootHeartBeatTimeOut>
+				<FWMRootHeartBeatRetryNum>1</FWMRootHeartBeatRetryNum>
+			</TimeOut>
+		</UNMUTABLE>
+	</MODULE_CONFIG>
+</CONFIG>
+

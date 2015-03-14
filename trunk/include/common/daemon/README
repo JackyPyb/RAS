@@ -1,0 +1,28 @@
+此类用于将编写的程序编程守护进程daemon，用法如下：
+1、创建一个Daemon类的对象；
+2、调用公共接口init().
+
+注意事项：
+1、创建Daemon类对象的时候一定要将可执行文件的路径（一般都以argv[0]）作为构造函数Daemon()的参数。
+可以是绝对路径，如：/home/user/bin/a.out；也可以是相对路径，如：./a.out，此时前提是工作路径在/home/user/bin下；
+2、一定要在main()函数的一开始就调用Daemon类的init()函数，否则可能对程序中接下来的操作造成影响（Daemon类中的
+日志信息依赖DevLog，在此之前应先创建DevLog对象）；
+3、若程序需要配置文件作为参数，那么需将配置文件的绝对路径传给程序（相对路径无效），一般将配置文件放在/etc目录下，
+最好将配置文件名字改为 "可执行文件名.conf"
+
+例子：
+int
+main(int argc, char *argv[])
+{
+    g_pDevLog = new DevLog();
+    g_pDevLog->init();
+
+    Daemon *obj = new Daemon(argv[0]);
+    obj->init();
+    ......
+}
+
+运行示例：
+./a.out 或
+./a.out /etc/config.xml 或
+/home/user/bin/a.out /etc/config.xml

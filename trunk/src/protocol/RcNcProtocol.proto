@@ -1,0 +1,132 @@
+package RcNcProto;
+
+//需要公用的message
+message GpuResourceInfo
+{
+    required string gpu_name = 1;//GPU名
+    optional uint32 gpu_mem_size = 2; //GPU内存大小
+}
+
+message ResourceInfo
+{
+    required double cpu_num = 1; //逻辑cpu个数
+    required uint32 cpu_mem_size = 2; //内存大小，单位为MB
+    optional uint32 gpu_num = 3; // 物理GPU个数
+    repeated GpuResourceInfo gpu_resource_info = 4;//GPU资源信息（其中查询资源类消息才带有此字段） 
+}
+
+message FrameworkIDInfo
+{
+    required uint32 framework_id = 1; //框架ID
+}
+
+message FrameworkInstanceInfo
+{
+    required uint32 framework_id = 1; //框架ID
+	required uint32 framework_instance_id = 2; //框架实例ID
+}
+
+message DockerImageInfo
+{
+    required string tag = 1;//image文件在docker仓库中的标签
+    optional string locate_file = 2;//镜像类模块位置的定位文件
+    optional string module_name = 3;//模块名
+}
+
+message NetAddress
+{
+    required string ip = 1;
+    optional uint32 port = 2;
+}
+
+//分别针对需要protobuf传递参数的协议进行定义
+
+//MSG_NC_RC_REGISTER
+message Register
+{
+	required string nc_ip = 1; //nc的IP地址
+	optional uint32 nc_port = 2; //nc监听的端口
+    optional ResourceInfo machine_total_resource = 3;//机器可分配的资源（包括内存总量和cpu个数和GPU）
+}
+
+//MSG_RC_NC_START_FRAMEWORK_ROOT
+message StartFrameworkRoot
+{
+	required FrameworkInstanceInfo framework_instance_info = 1; //框架实例信息
+	required uint32 self_module_id = 2; //自身模块的ID
+    optional DockerImageInfo docker_image_info = 3; //启动框架的docker镜像的信息
+	optional ResourceInfo require_resource = 4; //启动模块需要的资源
+	optional uint32 listen_num = 5; //监听端口的个数
+	optional NetAddress RC_address = 6; //RC的地址
+}
+
+//MSG_RC_NC_START_FRAMEWORK_ROOT_ACK
+message RespondStartFrameworkRoot
+{
+    required FrameworkInstanceInfo root_framework_instance_id = 1;//root模块所在的框架实例信息
+    optional string root_ip = 2; //root模块所在机器的ip
+    optional uint32 root_PID = 3; //root模块的进程号
+}
+
+//MSG_RC_NC_START_SLAVE
+message StartSlave
+{
+	required FrameworkInstanceInfo framework_instance_info = 1;//框架实例信息
+	required uint32 self_module_id = 2; //自身模块的ID
+    optional DockerImageInfo docker_image_info = 3;//docker镜像信息
+	optional ResourceInfo resource_info = 4;//该模块的资源量
+	optional uint32 listen_port_num = 5;
+	optional NetAddress FM_master_net_address = 6;//启动后连接FW Master的IP和PORT
+	optional NetAddress RC_net_address = 7; //RC监听FWM的IP和PORT
+}
+
+//MSG_RC_NC_START_SLAVE_ACK
+message RespondStartSlave
+{
+	required FrameworkInstanceInfo framework_instance_info = 1;//框架实例信息
+	required uint32 self_module_id = 2; //自身模块的ID
+    optional string machine_ip = 3;//模块所在机器IP
+    optional uint32 module_PID = 4;//模块的进程号
+}
+
+//MSG_RC_NC_REQUEST_RESOURCE 和 MSG_RC_NC_RETURN_RESOURCE
+message FrameworkResourceInfo
+{
+    required FrameworkInstanceInfo framework_instance_info = 1;//框架实例信息
+    optional ResourceInfo resource_info = 2;//资源信息
+    optional uint32 module_PID = 3;//模块进程号
+}
+
+
+//MSG_RC_NC_CLOSE_MODULE
+message CloseModule
+{
+    required FrameworkInstanceInfo framework_instance_info = 1;//框架实例信息
+    repeated uint32 module_PID = 2;//各个模块个进程号
+}
+
+//MSG_NC_RC_SEND_HEARTBEAT_AND_MONITOR_INFOMATION
+message MachineResourceInfo
+{
+    required uint32 cpu_mem_size = 1;//内存大小，单位为MB
+    optional double cpu_num = 2;//虚拟cpu个数
+    optional uint32 net_speed = 3; //网络速度 单位为MB/S
+	optional uint32 disk_size = 4;//磁盘大小,单位为MB
+    optional uint32 gpu_num = 5; //物理gpu个数 
+	repeated GpuResourceInfo gpu_resource_info = 6;//GPU资源信息
+}
+
+message ContainerResourceInfo
+{
+	required uint32 framework_instance_id = 1; //框架实例ID，通过Container ID转换得到
+	optional ResourceInfo resource_info = 2; //资源信息
+}
+message MonitorInfo
+{
+    required MachineResourceInfo total_machine_resource_info = 1;//机器上总的资源（包括内存，cpu，磁盘和网路）
+    optional MachineResourceInfo usage_machine_resource_info = 2;//机器上已经使用的资源
+    optional ResourceInfo rest_machine_resource_info = 3;//机器上剩余的CPU和内存和GPU
+    repeated ContainerResourceInfo container_require_resource_info = 4;//各个container申请的资源量
+	repeated ContainerResourceInfo container_usage_resource_info = 5;//各个container使用的资源量
+	repeated uint32 crash_moudle_id = 6; //挂掉的模块ID
+}

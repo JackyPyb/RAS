@@ -1,0 +1,106 @@
+package AlProto;
+
+//需要公用的message
+message GpuResourceInfo
+{
+    required string gpu_name = 1;//GPU名
+    optional uint32 gpu_mem_size = 2; //GPU内存大小
+}
+
+message ResourceInfo
+{
+    required double cpu_num = 1; //逻辑CPU个数
+    required uint32 cpu_mem_size = 2; //内存大小，单位为MB
+	optional uint32 gpu_num = 3; // 物理GPU个数
+    repeated GpuResourceInfo gpu_resource_info = 4;//GPU资源信息（其中查询资源类消息才带有此字段）
+}
+
+message FrameworkIDInfo
+{
+    required uint32 framework_id = 1; //框架ID
+}
+
+message FrameworkInstanceInfo
+{
+    required uint32 framework_id = 1; //框架ID
+    required uint32 framework_instance_id = 2; //框架实例ID
+}
+
+//分别针对需要protobuf传递参数的协议进行定义
+
+//MSG_AL_RC_START_ROOT_MODULE
+message StartRootModule
+{
+    required uint32 framework_id = 1; //框架ID
+    optional string image_lable = 2; //Image文件在Docker仓库中的标签
+    optional string module_name = 3; //root模块名
+    optional string location_file_path = 4; //Image内模块位置的定位文件
+    required string nc_ip = 5; //root模块希望从哪台机器上选择一台启动。“*”表示任意机器;如果是从多个机器中选择（非全部），则填写IP地址，中间以“,”分割，如“192.168.1.50,192.168.1.51”；下同
+	optional ResourceInfo request_resource_size = 6; //root模块启动需要的资源量
+	optional uint32 listen_num = 7; //监听端口的个数
+	optional ResourceInfo framework_max_request_resource_size = 8; //框架最多能申请的资源量
+}
+
+//MSG_AL_RC_ START_ROOT_MODULE_ACK
+
+//MSG_AL_RC_CLOSE_FRAMEWORK_INSTANCE
+
+//MSG_AL_RC_GET_PLATFORM_RESOURCE_ASSIGNMENT _ACK
+message AssignResourceInfo
+{
+    required ResourceInfo total_have_resource = 1; //总的资源量
+    optional ResourceInfo total_not_assign_resource = 2; //总的未分配的资源量
+    optional ResourceInfo total_already_assign_resource = 3; //总的分配出去的资源量
+}
+
+message ActualResourceInfo
+{
+    required ResourceInfo total_use_resource = 1; //实际总使用资源量
+    optional ResourceInfo total_not_use_resource = 2; //实际总剩余量
+}
+
+message AssignAndActualResourceInfo
+{
+    required AssignResourceInfo assign_resource = 1; //资源分配情况
+    optional ActualResourceInfo actual_resource = 2; //资源实际使用情况
+}
+message PlatformAndMachineResouceInfo
+{
+    required AssignAndActualResourceInfo platform_resource = 1; //平台资源信息
+    repeated AssignAndActualResourceInfo machine_resource = 2; //每台机器的
+}
+
+//MSG_AL_RC_GET_FRAMEWORK_INSTANCE_RESOURCE _ACK
+message ApplyAndUseResourceInfo
+{
+    required ResourceInfo apply_resource = 1; // 资源申请量
+    optional ResourceInfo use_resource = 2; //资源使用量
+}
+
+message MachineInstanceResourceInfo
+{
+    required string nc_ip = 1; //机器IP
+    optional ApplyAndUseResourceInfo machine_apply_use_resource = 2; //机器上资源申请量和使用量
+}
+
+message InstanceMachineResourceInfo
+{
+    required uint32 framework_instance_id = 1; //框架实例ID
+    optional ApplyAndUseResourceInfo instance_apply_use_resource = 2; //实例资源申请量和使用量
+}
+message AllFrameworkResourceInfo
+{
+	required uint32 framework_instance_id = 1; //框架实例ID
+	optional ApplyAndUseResourceInfo instance_total_apply_use_resource = 2; //框架实例总的资源申请量和使用量
+    repeated MachineInstanceResourceInfo instance_at_machine_resource = 3; //框架实例在该机器上总的资源申请量和使用量
+}
+message AllMachineResourceInfo
+{
+	required string nc_ip = 1; //机器IP
+	repeated InstanceMachineResourceInfo machine_has_instance_resource = 2; //机器上拥有的框架实例的资源申请量和使用量
+}
+message FrameworkInstanceResourceInfo
+{
+	repeated AllFrameworkResourceInfo all_framework_resource_info = 1; //所有的框架资源信息
+	repeated AllMachineResourceInfo all_machine_resource_info = 2; //所有的机器资源信息
+}
