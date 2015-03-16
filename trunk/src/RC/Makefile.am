@@ -35,7 +35,15 @@ __top_builddir__src_RC_librc_la_SOURCES = \
 										FWInstance.h \
 										FWInstance.cpp \
 										FWIManager.h \
-										FWIManager.cpp
+										FWIManager.cpp \
+										SASAgent.h \
+										SASAgent.cpp \
+										ALAgent.h \
+										ALAgent.cpp \
+										FWMAgent.h \
+										FWMAgent.cpp \
+										InfoFromFWMToRC.h \
+										InfoFromFWMToRC.cpp
 __top_builddir__src_RC_librc_la_LIBADD = \
 									$(top_srcdir)/lib/libcommon.la \
 			                     	$(top_srcdir)/lib/libprotocol.la
