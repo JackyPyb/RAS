@@ -33,7 +33,9 @@ __top_builddir__src_RC_librc_la_SOURCES = \
 										ResourceManager.h \
 										ResourceManager.cpp \
 										FWInstance.h \
-										FWInstance.cpp
+										FWInstance.cpp \
+										FWIManager.h \
+										FWIManager.cpp
 __top_builddir__src_RC_librc_la_LIBADD = \
 									$(top_srcdir)/lib/libcommon.la \
 			                     	$(top_srcdir)/lib/libprotocol.la

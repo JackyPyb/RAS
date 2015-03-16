@@ -71,7 +71,7 @@ am___top_builddir__src_RC_librc_la_OBJECTS = ConfigManager.lo \
 	RunControl.lo StrategyManager.lo GetNCFromAll.lo \
 	GetNCFromOne.lo NCAgent.lo InfoFromNCToRC.lo \
 	ResourceScheduler.lo InfoSendToNC.lo NCLoadBalance.lo \
-	ResourceManager.lo FWInstance.lo
+	ResourceManager.lo FWInstance.lo FWIManager.lo
 __top_builddir__src_RC_librc_la_OBJECTS =  \
 	$(am___top_builddir__src_RC_librc_la_OBJECTS)
 am__dirstamp = $(am__leading_dot)dirstamp
@@ -263,7 +263,9 @@ __top_builddir__src_RC_librc_la_SOURCES = \
 										ResourceManager.h \
 										ResourceManager.cpp \
 										FWInstance.h \
-										FWInstance.cpp
+										FWInstance.cpp \
+										FWIManager.h \
+										FWIManager.cpp
 
 __top_builddir__src_RC_librc_la_LIBADD = \
 									$(top_srcdir)/lib/libcommon.la \
@@ -377,6 +379,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ConfigManager.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FWIManager.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FWInstance.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GetNCFromAll.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GetNCFromOne.Plo@am__quote@
