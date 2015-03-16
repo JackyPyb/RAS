@@ -6,9 +6,26 @@
 namespace rc
 {
 
-FWInstance::FWInstance()
+FWInstance::FWInstance():
+    m_FWInstanceID(0)
 {
 
+}
+
+FWInstance::FWInstance(const uint32_t id):
+    m_FWInstanceID(id)
+{
+
+}
+
+void FWInstance::setFWInstanceID(const uint32_t id)
+{
+    m_FWInstanceID = id;
+}
+
+uint32_t FWInstance::getFWInstanceID() const
+{
+    return m_FWInstanceID;
 }
 
 FWInstance::~FWInstance()
@@ -177,6 +194,162 @@ void FWInstance::setTotalActualUseRes(const Resource &res)
 Resource FWInstance::getTotalActualUseRes() const
 {
     return m_totalActualUseRes;
+}
+
+bool FWInstance::addRootModule(const uint32_t moduleID)
+{
+    ParentChildrenIter parentChildrenIter = m_moduleParentChildrenMap.find(moduleID);
+    if(parentChildrenIter != m_moduleParentChildrenMap.end())
+    {
+        INFO_LOG("FWInstance::addRootModule: \
+                module %d is already in FWInstance %d", 
+                moduleID, m_FWInstanceID);
+        return false;
+    }
+    else
+    {
+        set<uint32_t> childrenSet;
+        m_moduleParentChildrenMap[moduleID] = childrenSet;
+        this->setRootModuleID(moduleID);
+        return true;        
+    }    
+}
+
+bool FWInstance::addModule(const uint32_t parentID, const uint32_t childID)
+{
+    ParentChildrenIter parentChildrenIter = 
+        m_moduleParentChildrenMap.find(parentID);    
+    if(parentChildrenIter == m_moduleParentChildrenMap.end())
+    {
+        INFO_LOG("FWInstance::addModule: \
+                parent module %d is not in FWInstance %d",
+                parentID, m_FWInstanceID);
+        return false;
+    }
+    else
+    {
+        SetIter childrenIter = (parentChildrenIter->second).find(childID);
+        if(childrenIter != (parentChildrenIter->second).end())
+        {
+            INFO_LOG("FWInstance::addModule: \
+                    childID %d is already in parent %d in FWInstance %d", 
+                    childID, parentID, m_FWInstanceID);
+            return false;
+        }
+        else
+        {
+            (parentChildrenIter->second).insert(childID);
+        }
+    }
+
+    return true;
+}
+
+bool FWInstance::delModule(const uint32_t id)
+{
+    ParentChildrenIter parentChildrenIter = 
+        m_moduleParentChildrenMap.find(id);
+    if(parentChildrenIter == m_moduleParentChildrenMap.end())
+    {
+        INFO_LOG("FWInstance::delModule: \
+                module %d is not in FWInstance %d",
+                id, m_FWInstanceID);
+        return false;
+    }
+    else
+    {
+        if(!(parentChildrenIter->second).empty())
+        {
+            SetIter setIter = (parentChildrenIter->second).begin();
+            for(; setIter != (parentChildrenIter->second).end(); setIter++)
+            {
+                this->delModule(*setIter);
+                (parentChildrenIter->second).erase(*setIter);
+            }
+        }
+        else
+        {
+            m_moduleParentChildrenMap.erase(id);
+            m_moduleIDIPProcessMap.erase(id);
+        }
+    }
+
+    return true;
+}
+
+bool FWInstance::delAllModules(const uint32_t rootModuleID)
+{
+    return delModule(getRootModuleID());
+}
+
+void FWInstance::setModuleIPProcess(const uint32_t moduleID,
+        const string &ip, uint32_t processID)
+{
+    IPProcess ipProcess(ip, processID);
+    m_moduleIDIPProcessMap[moduleID] = ipProcess;
+}
+
+IPProcess FWInstance::getModuleIPProcess(const uint32_t moduleID) const
+{
+    IDIPProcessConstIter idIPProcessIter = m_moduleIDIPProcessMap.find(moduleID);
+    if(idIPProcessIter != m_moduleIDIPProcessMap.end())
+    {
+        return idIPProcessIter->second;
+    }
+    else
+    {
+        return IPProcess();
+    }
+}
+
+void FWInstance::setRootModuleID(const uint32_t rootModuleID)
+{
+    m_rootModuleID = rootModuleID;
+}
+
+uint32_t FWInstance::getRootModuleID() const
+{
+    return m_rootModuleID;
+}
+
+void FWInstance::setRootLogicCPUNum(const double logicCPUNum)
+{
+    m_rootLogicCPUNum = logicCPUNum;
+}
+
+double FWInstance::getRootLogicCPUNum() const
+{
+    return m_rootLogicCPUNum;
+}
+
+void FWInstance::setRootMemSize(const uint32_t memSize)
+{
+    m_rootMemSize = memSize;
+}
+
+uint32_t FWInstance::getRootMemSize() const
+{
+    return m_rootMemSize;
+}
+
+void FWInstance::setRootGPUInfo(const multimap<string, uint32_t> &gpuInfo)
+{
+    m_rootGPUInfo = gpuInfo;    
+}
+
+multimap<string, uint32_t> FWInstance::getRootGPUInfo() const
+{
+    return m_rootGPUInfo;
+}
+
+void FWInstance::setIsClosing(bool isClosing)
+{
+    m_isClosing = isClosing;
+}
+
+bool FWInstance::getIsClosing() const
+{
+    return m_isClosing;
 }
 
 }

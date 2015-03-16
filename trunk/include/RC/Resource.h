@@ -32,6 +32,15 @@ struct Resource
         GPUInfo.clear();
     }
 
+    bool isDoubleEqual(double lhs, double rhs) const
+    {
+        if((lhs - rhs > -0.0000001) &&
+                (lhs - rhs) < 0.0000001)
+            return true;
+        else
+            return false;
+    }
+
     Resource operator += (const Resource &rhs)
     {
         this->logicCPUNum += rhs.logicCPUNum;
@@ -154,7 +163,7 @@ struct Resource
     bool operator == (const Resource &rhs) const
     {
         bool ret = false;
-        if(this->logicCPUNum != rhs.logicCPUNum)
+        if(!this->isDoubleEqual(this->logicCPUNum, rhs.logicCPUNum))
             return ret;
 
         if(this->cpuMemSize != rhs.cpuMemSize)
@@ -185,7 +194,7 @@ struct Resource
 
     bool isResZero() const
     {
-        if((this->logicCPUNum != 0) || (this->cpuMemSize != 0))
+        if((!this->isDoubleEqual(this->logicCPUNum, 0.0)) || (this->cpuMemSize != 0))
             return false;
 
         if(this->GPUInfo.size() == 0)
