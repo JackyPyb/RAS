@@ -45,7 +45,8 @@ __top_builddir__src_RC_librc_la_SOURCES = \
 										InfoFromFWMToRC.h \
 										InfoFromFWMToRC.cpp \
 										InfoSendToFWM.h \
-										InfoSendToFWM.cpp
+										InfoSendToFWM.cpp \
+										ContainResourceTask.h
 __top_builddir__src_RC_librc_la_LIBADD = \
 									$(top_srcdir)/lib/libcommon.la \
 			                     	$(top_srcdir)/lib/libprotocol.la
