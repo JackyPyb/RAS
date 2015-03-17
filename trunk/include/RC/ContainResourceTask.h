@@ -17,10 +17,20 @@ class ContainResourceTask : public Task
 {
 public:
     ContainResourceTask(){}
-    virtual ~ContainResourceTask(){}
+    virtual ~ContainResourceTask()
+    {
+        m_resourceMap.clear();
+    }
 
-    void setResourceMap(const multimap<string, Resource> &);
-    multimap<string, Resource> getResourceMap() const;
+    void setResourceMap(const multimap<string, Resource> &resMap)
+    {
+        m_resourceMap = resMap;
+    }
+
+    multimap<string, Resource> getResourceMap() const
+    {
+        return m_resourceMap;
+    }
 
 private:
     multimap<string, Resource> m_resourceMap;
