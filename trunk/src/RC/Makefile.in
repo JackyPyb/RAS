@@ -72,7 +72,8 @@ am___top_builddir__src_RC_librc_la_OBJECTS = ConfigManager.lo \
 	GetNCFromOne.lo NCAgent.lo InfoFromNCToRC.lo \
 	ResourceScheduler.lo InfoSendToNC.lo NCLoadBalance.lo \
 	ResourceManager.lo FWInstance.lo FWIManager.lo SASAgent.lo \
-	ALAgent.lo FWMAgent.lo InfoFromFWMToRC.lo InfoSendToFWM.lo
+	ALAgent.lo FWMAgent.lo InfoFromFWMToRC.lo InfoSendToFWM.lo \
+	NCHeartBeatTimer.lo FWMHeartBeatTimer.lo
 __top_builddir__src_RC_librc_la_OBJECTS =  \
 	$(am___top_builddir__src_RC_librc_la_OBJECTS)
 am__dirstamp = $(am__leading_dot)dirstamp
@@ -277,7 +278,11 @@ __top_builddir__src_RC_librc_la_SOURCES = \
 										InfoFromFWMToRC.cpp \
 										InfoSendToFWM.h \
 										InfoSendToFWM.cpp \
-										ContainResourceTask.h
+										ContainResourceTask.h \
+										NCHeartBeatTimer.h \
+										NCHeartBeatTimer.cpp \
+										FWMHeartBeatTimer.h \
+										FWMHeartBeatTimer.cpp
 
 __top_builddir__src_RC_librc_la_LIBADD = \
 									$(top_srcdir)/lib/libcommon.la \
@@ -395,6 +400,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FWIManager.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FWInstance.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FWMAgent.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FWMHeartBeatTimer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GetNCFromAll.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/GetNCFromOne.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/InfoFromFWMToRC.Plo@am__quote@
@@ -402,6 +408,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/InfoSendToFWM.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/InfoSendToNC.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/NCAgent.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/NCHeartBeatTimer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/NCLoadBalance.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ResourceManager.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ResourceScheduler.Plo@am__quote@

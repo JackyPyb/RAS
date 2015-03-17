@@ -46,7 +46,11 @@ __top_builddir__src_RC_librc_la_SOURCES = \
 										InfoFromFWMToRC.cpp \
 										InfoSendToFWM.h \
 										InfoSendToFWM.cpp \
-										ContainResourceTask.h
+										ContainResourceTask.h \
+										NCHeartBeatTimer.h \
+										NCHeartBeatTimer.cpp \
+										FWMHeartBeatTimer.h \
+										FWMHeartBeatTimer.cpp
 __top_builddir__src_RC_librc_la_LIBADD = \
 									$(top_srcdir)/lib/libcommon.la \
 			                     	$(top_srcdir)/lib/libprotocol.la
