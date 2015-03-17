@@ -1,8 +1,8 @@
 #include "RunControl.h"
 #include "ConfigManager.h"
 #include "StrategyManager.h"
-//#include "NCAgent.h"
-//#include "SASAgent.h"
+#include "NCAgent.h"
+#include "SASAgent.h"
 
 #include "common/comm/TCPListenAgent.h"
 #include "common/comm/AgentManager.h"
@@ -47,23 +47,23 @@ void RunControl::runRC(void)
 
 void RunControl::NCListen(void)
 {
-//    TCPListenAgent<NCAgent> *pNCListenAgent = 
-//        (AgentManager::getInstance())
-//        ->createAgent< TCPListenAgent<NCAgent> >(g_pEpoll);
-//    SocketAddress NCListenAddress = 
-//        (ConfigManager::getInstance())->getNCListenAddr();
-//    pNCListenAgent->init(NCListenAddress);
+    SocketAddress NCListenAddress = 
+        (ConfigManager::getInstance())->getNCListenAddr();
+    TCPListenAgent<NCAgent> *pNCListenAgent = 
+        (AgentManager::getInstance())
+        ->createAgent< TCPListenAgent<NCAgent> >(NCListenAddress);
+    pNCListenAgent->init();
     INFO_LOG("Listen to NC");
 }
 
 void RunControl::SASListen(void)
 {
-//    TCPListenAgent<SASAgent> *pSASListenAgent = 
-//        (AgentManager::getInstance())
-//        ->createAgent< TCPListenAgent<SASAgent> >(g_pEpoll);
-//    SocketAddress SASListenAddress = 
-//        (ConfigManager::getInstance())->getSASListenAddr();
-//    pSASListenAgent->init(SASListenAddress);
+    SocketAddress SASListenAddress = 
+        (ConfigManager::getInstance())->getSASListenAddr();
+    TCPListenAgent<SASAgent> *pSASListenAgent = 
+        (AgentManager::getInstance())
+        ->createAgent< TCPListenAgent<SASAgent> >(SASListenAddress);
+    pSASListenAgent->init();
     INFO_LOG("Listen to SAS");
 }
 

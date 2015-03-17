@@ -21,12 +21,15 @@ StrategyManager::~StrategyManager()
 
 void StrategyManager::init()
 {
-
+    INFO_LOG("StrategyManager::init createStrategy");
+    createStrategy<GetNCFromAll>();
+    createStrategy<GetNCFromOne>();
 }
 
 uint32_t StrategyManager::addStrategy(Strategy *pStrategy)
 {
     uint32_t id = generateStrategyID();
+    INFO_LOG("StrategyManager::addStrategy id is %d", id);
     pStrategy->setStrategyID(id);
     m_strategyMap[id] = pStrategy;
     return id;

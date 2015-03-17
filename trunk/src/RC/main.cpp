@@ -36,7 +36,6 @@ void sig_internal(int sigNo);
 
 int main(int argc, char *argv[])
 {
-    INFO_LOG("JFALJJJJJJJJJJJJJJJJJJ");
     if(argc != 3)
     {
         std::cout << "Usage: " << argv[0] << " -f config_filename" << std::endl;

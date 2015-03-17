@@ -3,6 +3,7 @@
 
 #include "common/log/log.h"
 #include "common/comm/AgentManager.h"
+#include "protocol/RASCmdCode.h"
 
 namespace rc
 {
@@ -25,7 +26,17 @@ int InfoFromNCToRC::handleNCReq(InReq &req)
     uint64_t taskID = mergeID(req.m_msgHeader.para1, req.m_msgHeader.para2);
     switch(req.m_msgHeader.cmd)
     {
-        
+        case MSG_NC_RC_REGISTER:
+        {
+            string data(req.ioBuf, req.m_msgHeader.length);
+            ret = doRegister(taskID, data);
+            break;
+        }
+
+        default:
+            ERROR_LOG(
+                    "InfoFromNCToRC::handleNCReq: \
+                    Invaild MSG_HEADER_CMD");
     }
 
     return ret;
@@ -39,7 +50,7 @@ int InfoFromNCToRC::taskReportFromNC(
 
 int InfoFromNCToRC::doRegister(uint64_t tid, string str)
 {
-
+    
 }
 
 void InfoFromNCToRC::sendAckToNC(
