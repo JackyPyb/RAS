@@ -1,8 +1,10 @@
 #include "ResourceManager.h"
 #include "ConfigManager.h"
+#include "NCRegTask.h"
 
 #include "protocol/RASErrorCode.h"
 #include "common/comm/AgentManager.h"
+#include "common/comm/TaskManager.h"
 #include "common/comm/Error.h"
 #include "common/log/log.h"
 
@@ -11,7 +13,7 @@ namespace rc
 
 ResourceManager::ResourceManager():
     m_LBNum(0),
-    m_isFWMListenCreated(false)
+    m_isALFWMListenCreated(false)
 {
 
 }
@@ -30,15 +32,26 @@ ResourceManager::~ResourceManager()
     m_CPUFirstGPUNotConsider.clear();
 }
 
-NCLoadBalance* ResourceManager::createNCLB(const string &ip)
+NCLoadBalance* ResourceManager::createNCLB(const string &ip, const uint32_t tid)
 {
     NCLoadBalance *pNCLB = new NCLoadBalance(ip);
+
+    Resource res;
+    NCRegTask * pNCRegTask = dynamic_cast<NCRegTask*>((TaskManager::getInstance())->get(tid));
+    if(pNCRegTask != NULL)
+    {
+        multimap<string, Resource> resMap = pNCRegTask->getResourceMap();
+        multimap<string, Resource>::iterator iter = resMap.find(ip);
+        res = iter->second;
+        pNCLB->setTotalNCRes(res);
+    }
+
     return pNCLB;
 }
 
-int ResourceManager::registerNC(const string &ip, const uint32_t aid)
+int ResourceManager::registerNC(const string &ip, const uint32_t aid, const uint32_t tid)
 {
-    NCLoadBalance *pNCLB = createNCLB(ip);
+    NCLoadBalance *pNCLB = createNCLB(ip, tid);
     bool ret = addNCLB(ip, pNCLB);
     if(ret == false)
     {
@@ -211,9 +224,14 @@ bool ResourceManager::checkServiceIsOK() const
         return false;
 }
 
-bool ResourceManager::isFWMListenCreated() const
+void ResourceManager::setALFWMListenCreated(bool isListened)
 {
-    return m_isFWMListenCreated;
+    m_isALFWMListenCreated = isListened;
+}
+
+bool ResourceManager::isALFWMListenCreated() const
+{
+    return m_isALFWMListenCreated;
 }
 
 }

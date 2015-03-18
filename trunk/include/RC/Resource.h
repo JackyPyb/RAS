@@ -1,5 +1,5 @@
 #ifndef _RC_RESOURCE_H_
-#endif
+#define _RC_RESOURCE_H_
 
 #include <map>
 #include <string>
@@ -218,3 +218,5 @@ struct Resource
 };
 
 }
+
+#endif

@@ -11,6 +11,7 @@
 #include "NCLoadBalance.h"
 
 using std::map;
+using std::multimap;
 using std::multiset;
 using std::vector;
 
@@ -150,8 +151,8 @@ protected:
 public:
     friend class Singleton<ResourceManager>;
 
-    NCLoadBalance* createNCLB(const string&);
-    int registerNC(const string&, const uint32_t);
+    NCLoadBalance* createNCLB(const string&, const uint32_t tid);
+    int registerNC(const string&, const uint32_t, const uint32_t);
     int unregisterNC(const string&);
     int NCOffLine(const string&);
 
@@ -170,7 +171,8 @@ public:
     void sortNCLoadBalance();
     int dealNCCrash(const string&);
     bool checkServiceIsOK() const;
-    bool isFWMListenCreated() const;
+    void setALFWMListenCreated(bool);
+    bool isALFWMListenCreated() const;
 
 private:
     typedef map<string, NCLoadBalance*>::iterator NCMapIter;
@@ -181,7 +183,7 @@ private:
     multiset<NCInfo, MemFirstCmp> m_memFirstGPUNotConsider;
     multiset<NCInfo, CPUFirstCmp> m_CPUFirstGPUNotConsider;
     uint32_t m_LBNum;
-    bool m_isFWMListenCreated;
+    bool m_isALFWMListenCreated;
 
     NCMapIter m_NCMapIterNow;
 

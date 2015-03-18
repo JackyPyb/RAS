@@ -15,7 +15,8 @@ namespace rc
 const uint32_t NCREGTASK_DOPARSE = 1;
 const uint32_t NCREGTASK_REGISTER = 2;
 const uint32_t NCREGTASK_CHECK_SERVICE = 3;
-const uint32_t NCREGTASK_FINISH_TASK = 4;
+const uint32_t NCREGTASK_CREATE_ALFWMLISTEN = 4;
+const uint32_t NCREGTASK_FINISH_TASK = 5;
 
 class NCRegTask : public ContainResourceTask
 {
@@ -57,9 +58,9 @@ public:
         return m_port;
     }
 
-    void setNCTaskID(const uint64_t tid)
+    void setNCTaskID(uint64_t ncTid)
     {
-        m_NCTaskID = tid;
+        m_NCTaskID = ncTid;
     }
 
     uint64_t getNCTaskID() const

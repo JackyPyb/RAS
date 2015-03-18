@@ -19,7 +19,7 @@ public:
 
     int handleNCReq(InReq &);
     int taskReportFromNC(uint32_t, uint64_t);
-    int doRegister(uint64_t, string);
+    int doRegister(uint64_t, const string&);
     void sendAckToNC(uint32_t, uint32_t, uint32_t, uint32_t);
     uint64_t mergeID(uint32_t, uint32_t) const;
 

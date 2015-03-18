@@ -1,8 +1,10 @@
 #include "InfoFromNCToRC.h"
 #include "NCAgent.h"
+#include "NCRegTask.h"
 
 #include "common/log/log.h"
 #include "common/comm/AgentManager.h"
+#include "common/comm/TaskManager.h"
 #include "protocol/RASCmdCode.h"
 
 namespace rc
@@ -48,9 +50,13 @@ int InfoFromNCToRC::taskReportFromNC(
     return 0;
 }
 
-int InfoFromNCToRC::doRegister(uint64_t tid, string str)
+int InfoFromNCToRC::doRegister(uint64_t tid, const string &str)
 {
-    
+    NCRegTask *pTask = (TaskManager::getInstance())->create<NCRegTask>();
+    pTask->setAgentID(m_NCAgentID);
+    pTask->setDataString(str);
+    pTask->setNCTaskID(tid);
+    return pTask->goNext();    
 }
 
 void InfoFromNCToRC::sendAckToNC(
