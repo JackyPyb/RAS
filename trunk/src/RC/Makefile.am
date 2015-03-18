@@ -52,7 +52,9 @@ __top_builddir__src_RC_librc_la_SOURCES = \
 										FWMHeartBeatTimer.h \
 										FWMHeartBeatTimer.cpp \
 										NCRegTask.h \
-										NCRegTask.cpp
+										NCRegTask.cpp \
+										NCHeartBeatTask.h \
+										NCHeartBeatTask.cpp
 __top_builddir__src_RC_librc_la_LIBADD = \
 									$(top_srcdir)/lib/libcommon.la \
 			                     	$(top_srcdir)/lib/libprotocol.la

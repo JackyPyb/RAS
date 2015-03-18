@@ -73,7 +73,8 @@ am___top_builddir__src_RC_librc_la_OBJECTS = ConfigManager.lo \
 	ResourceScheduler.lo InfoSendToNC.lo NCLoadBalance.lo \
 	ResourceManager.lo FWInstance.lo FWIManager.lo SASAgent.lo \
 	ALAgent.lo FWMAgent.lo InfoFromFWMToRC.lo InfoSendToFWM.lo \
-	NCHeartBeatTimer.lo FWMHeartBeatTimer.lo NCRegTask.lo
+	NCHeartBeatTimer.lo FWMHeartBeatTimer.lo NCRegTask.lo \
+	NCHeartBeatTask.lo
 __top_builddir__src_RC_librc_la_OBJECTS =  \
 	$(am___top_builddir__src_RC_librc_la_OBJECTS)
 am__dirstamp = $(am__leading_dot)dirstamp
@@ -284,7 +285,9 @@ __top_builddir__src_RC_librc_la_SOURCES = \
 										FWMHeartBeatTimer.h \
 										FWMHeartBeatTimer.cpp \
 										NCRegTask.h \
-										NCRegTask.cpp
+										NCRegTask.cpp \
+										NCHeartBeatTask.h \
+										NCHeartBeatTask.cpp
 
 __top_builddir__src_RC_librc_la_LIBADD = \
 									$(top_srcdir)/lib/libcommon.la \
@@ -410,6 +413,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/InfoSendToFWM.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/InfoSendToNC.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/NCAgent.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/NCHeartBeatTask.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/NCHeartBeatTimer.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/NCLoadBalance.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/NCRegTask.Plo@am__quote@

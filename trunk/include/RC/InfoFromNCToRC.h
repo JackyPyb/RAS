@@ -1,6 +1,8 @@
 #ifndef _RC_INFOFROMNCTORC_H_
 #define _RC_INFOFROMNCTORC_H_
 
+#include "NCHeartBeatTimer.h"
+
 #include "common/comm/BaseReq.h"
 
 #include <stdint.h>
@@ -26,7 +28,7 @@ public:
 private:
     uint32_t m_NCAgentID;
     string m_NCIP;
-
+    NCHeartBeatTimer *m_pNCHeartBeatTimer;
 };
 
 }
