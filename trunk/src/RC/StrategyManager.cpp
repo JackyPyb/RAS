@@ -1,6 +1,7 @@
 #include "StrategyManager.h"
 #include "GetNCFromAll.h"
 #include "GetNCFromOne.h"
+#include "protocol/SchedulerType.h"
 
 #include "common/log/log.h"
 
@@ -15,20 +16,19 @@ StrategyManager::StrategyManager():
 
 StrategyManager::~StrategyManager()
 {
-    createStrategy<GetNCFromAll>();
-    createStrategy<GetNCFromOne>();
+
 }
 
 void StrategyManager::init()
 {
     INFO_LOG("StrategyManager::init createStrategy");
-    createStrategy<GetNCFromAll>();
-    createStrategy<GetNCFromOne>();
+    createStrategy<GetNCFromAll>(GETNCFROMALL);
+    createStrategy<GetNCFromOne>(GETNCFROMONE);
 }
 
-uint32_t StrategyManager::addStrategy(Strategy *pStrategy)
+uint32_t StrategyManager::addStrategy(Strategy *pStrategy, uint32_t id)
 {
-    uint32_t id = generateStrategyID();
+//    uint32_t id = generateStrategyID();
     INFO_LOG("StrategyManager::addStrategy id is %d", id);
     pStrategy->setStrategyID(id);
     m_strategyMap[id] = pStrategy;

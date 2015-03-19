@@ -22,11 +22,11 @@ public:
     friend class Singleton<StrategyManager>;
 
     template<typename T>
-        T* createStrategy(void);
+        T* createStrategy(uint32_t);
 
     void init();
 
-    uint32_t addStrategy(Strategy*);
+    uint32_t addStrategy(Strategy*, uint32_t);
     bool deleteStrategy(const uint32_t);
     Strategy* getStrategy(const uint32_t);
     uint32_t generateStrategyID();
@@ -40,10 +40,10 @@ private:
 };
 
 template<typename T>
-T* StrategyManager::createStrategy(void)
+T* StrategyManager::createStrategy(uint32_t id)
 {
     T* pStrategy = new T();
-    addStrategy(pStrategy);
+    addStrategy(pStrategy, id);
     return pStrategy;
 }
 

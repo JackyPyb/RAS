@@ -60,6 +60,8 @@ int ResourceManager::registerNC(const string &ip, const uint32_t aid, const uint
         return FAILED;
     }
 
+    addPlatformTotalRes(pNCLB->getTotalNCRes());
+
     addNCLBToSets(ip);
 
     if(!pNCLB->isNCOnline())
@@ -192,9 +194,62 @@ uint32_t ResourceManager::getLBNum() const
     return m_LBNum;
 }
 
-string ResourceManager::getSuitableNC() const
+string ResourceManager::getSuitableNCByMem(const Resource &res) const
 {
-    return string("");
+    string suitableIP = "";
+    MemSetIter iter = m_memFirstGPUNotConsider.begin();
+    for(; iter != m_memFirstGPUNotConsider.end(); iter++)
+    {
+        NCInfo ncInfo = *iter;
+        NCLoadBalance * pNCLB = ncInfo.getNCLB();
+        Resource ncRes = pNCLB->getNotApplyRes();
+        if((ncRes.cpuMemSize >= res.cpuMemSize) &&
+                (ncRes.logicCPUNum >= res.logicCPUNum))
+        {
+            suitableIP = ncInfo.getIP();
+            break;
+        }
+        else if((ncRes.cpuMemSize < res.cpuMemSize) &&
+                (ncRes.logicCPUNum < res.logicCPUNum))
+        {
+            break;
+        }
+        else
+        {
+            continue;
+        }
+    }
+
+    return suitableIP;
+}
+
+string ResourceManager::getSuitableNCByCPU(const Resource &res) const
+{
+    string suitableIP = "";
+    CPUSetIter iter = m_CPUFirstGPUNotConsider.begin();
+    for(; iter != m_CPUFirstGPUNotConsider.end(); iter++)
+    {
+        NCInfo ncInfo = *iter;
+        NCLoadBalance * pNCLB = ncInfo.getNCLB();
+        Resource ncRes = pNCLB->getNotApplyRes();
+        if((ncRes.cpuMemSize >= res.cpuMemSize) &&
+                (ncRes.logicCPUNum >= res.logicCPUNum))
+        {
+            suitableIP = ncInfo.getIP();
+            break;
+        }
+        else if((ncRes.cpuMemSize < res.cpuMemSize) &&
+                (ncRes.logicCPUNum < res.logicCPUNum))
+        {
+            break;
+        }
+        else
+        {
+            continue;
+        }
+    }
+
+    return suitableIP;
 }
 
 string ResourceManager::getSuitableNCFromVec(const vector<string> &ips) const
@@ -232,6 +287,39 @@ void ResourceManager::setALFWMListenCreated(bool isListened)
 bool ResourceManager::isALFWMListenCreated() const
 {
     return m_isALFWMListenCreated;
+}
+
+void ResourceManager::setPlatformTotalRes(const Resource &res)
+{
+    m_platformTotalRes = res;
+}
+
+Resource ResourceManager::getPlatformTotalRes() const
+{
+    return m_platformTotalRes;
+}
+
+bool ResourceManager::addPlatformTotalRes(const Resource &res)
+{
+    m_platformTotalRes += res;
+    return SUCCESSFUL;
+}
+
+bool ResourceManager::delPlatformTotalRes(const Resource &res)
+{
+    if(m_platformTotalRes >= res)
+    {
+        m_platformTotalRes -= res;
+    }
+    else
+    {
+        ERROR_LOG(
+                "ResourceManager::delPlatformTotalRes: \
+                del resource exceeds platform total resource");
+        return FAILED;
+    }
+
+    return SUCCESSFUL;
 }
 
 }

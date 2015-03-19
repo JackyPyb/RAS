@@ -6,6 +6,8 @@
 #include <set>
 #include <vector>
 
+#include "Resource.h"
+
 #include "common/sys/Singleton.h"
 
 #include "NCLoadBalance.h"
@@ -166,13 +168,18 @@ public:
     bool findNCLB(const string&);
 
     uint32_t getLBNum() const;
-    string getSuitableNC() const;
+    string getSuitableNCByMem(const Resource&) const;
+    string getSuitableNCByCPU(const Resource&) const;
     string getSuitableNCFromVec(const vector<string>&) const;
     void sortNCLoadBalance();
     int dealNCCrash(const string&);
     bool checkServiceIsOK() const;
     void setALFWMListenCreated(bool);
     bool isALFWMListenCreated() const;
+    void setPlatformTotalRes(const Resource&);
+    Resource getPlatformTotalRes() const;
+    bool addPlatformTotalRes(const Resource&);
+    bool delPlatformTotalRes(const Resource&);
 
 private:
     typedef map<string, NCLoadBalance*>::iterator NCMapIter;
@@ -184,6 +191,7 @@ private:
     multiset<NCInfo, CPUFirstCmp> m_CPUFirstGPUNotConsider;
     uint32_t m_LBNum;
     bool m_isALFWMListenCreated;
+    Resource m_platformTotalRes;
 
     NCMapIter m_NCMapIterNow;
 
