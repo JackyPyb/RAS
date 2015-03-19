@@ -21,6 +21,7 @@ public:
     void setMsgHeader(uint32_t, uint32_t err = 0, 
             uint32_t len = 0, uint64_t tid = 0);
     int sendPackage(MsgHeader&, string data = "");
+    uint64_t mergeID(uint32_t low, uint32_t high) const;
 
 private:
     MsgHeader m_msg;

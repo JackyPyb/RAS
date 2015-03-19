@@ -116,6 +116,8 @@ public:
     FWInstance(const uint32_t);
     ~FWInstance();
 
+    void setFrameworkID(const uint32_t);
+    uint32_t getFrameworkID() const;
     void setFWInstanceID(const uint32_t);
     uint32_t getFWInstanceID() const;
     void setQueryEntry(const string &ip, const uint32_t port);
@@ -164,6 +166,7 @@ private:
     typedef set<uint32_t>::iterator SetIter;
     typedef set<uint32_t>::const_iterator SetConstIter;
 
+    uint32_t m_frameworkID;
     uint32_t m_FWInstanceID;
     QueryEntry m_queryEntry;
     map<string, Resource> m_eachNCApplyRes;

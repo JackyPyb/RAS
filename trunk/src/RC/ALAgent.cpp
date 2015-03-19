@@ -1,5 +1,8 @@
 #include "ALAgent.h"
+#include "StartFWRootTask.h"
+#include "protocol/RASCmdCode.h"
 
+#include "common/comm/TaskManager.h"
 #include "common/log/log.h"
 
 namespace rc
@@ -19,7 +22,21 @@ ALAgent::~ALAgent()
 
 void ALAgent::readBack(InReq &req)
 {
-
+    uint64_t taskID = mergeID(req.m_msgHeader.para1, req.m_msgHeader.para2);
+    
+    switch(req.m_msgHeader.cmd)
+    {
+        case MSG_AL_RC_START_ROOT_MODULE:
+        {
+            string data(req.ioBuf, req.m_msgHeader.length);
+            StartFWRootTask *pTask = 
+                (TaskManager::getInstance())->create<StartFWRootTask>();
+            pTask->setDataString(data);
+            pTask->setAgentID(getID());
+            pTask->goNext();
+            break;            
+        }
+    }
 }
 
 void ALAgent::setMsgHeader(
@@ -32,6 +49,12 @@ void ALAgent::setMsgHeader(
     m_msg.para2 = tid >> 32;
 }
 
+uint64_t ALAgent::mergeID(uint32_t low, uint32_t high) const
+{
+    uint64_t temp = (uint64_t)high << 32;
+    temp += (uint64_t)low;
+    return temp;
+}
 
 int ALAgent::sendPackage(MsgHeader &msg, string data)
 {

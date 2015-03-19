@@ -54,7 +54,9 @@ __top_builddir__src_RC_librc_la_SOURCES = \
 										NCRegTask.h \
 										NCRegTask.cpp \
 										NCHeartBeatTask.h \
-										NCHeartBeatTask.cpp
+										NCHeartBeatTask.cpp \
+										StartFWRootTask.h \
+										StartFWRootTask.cpp
 __top_builddir__src_RC_librc_la_LIBADD = \
 									$(top_srcdir)/lib/libcommon.la \
 			                     	$(top_srcdir)/lib/libprotocol.la

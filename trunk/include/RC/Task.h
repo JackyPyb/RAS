@@ -40,8 +40,8 @@ public:
         return m_schedulerType;
     }
 
-    virtual void setCUIP(const string&){}
-    virtual void getCU(vector<string>&){}
+    virtual void setNCIP(const string&){}
+    virtual void getNC(vector<string>&){}
     virtual int goNext()
     {
         return 0;

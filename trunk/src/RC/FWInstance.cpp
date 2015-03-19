@@ -18,6 +18,16 @@ FWInstance::FWInstance(const uint32_t id):
 
 }
 
+void FWInstance::setFrameworkID(const uint32_t id)
+{
+    m_frameworkID = id;
+}
+
+uint32_t FWInstance::getFrameworkID() const
+{
+    return m_frameworkID;
+}
+
 void FWInstance::setFWInstanceID(const uint32_t id)
 {
     m_FWInstanceID = id;
