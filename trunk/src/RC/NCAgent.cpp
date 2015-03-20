@@ -11,6 +11,7 @@ NCAgent::NCAgent(const TCPSocket &sock,
 {
     INFO_LOG("NCAgent construction");
     m_NCIP = string(oppoAddr.getIP());        
+    INFO_LOG("NC IP is %s", m_NCIP.c_str());
 }
 
 NCAgent::~NCAgent()

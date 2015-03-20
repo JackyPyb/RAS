@@ -32,6 +32,7 @@ void ALAgent::readBack(InReq &req)
             StartFWRootTask *pTask = 
                 (TaskManager::getInstance())->create<StartFWRootTask>();
             pTask->setDataString(data);
+            pTask->setALTaskID(taskID);
             pTask->setAgentID(getID());
             pTask->goNext();
             break;            

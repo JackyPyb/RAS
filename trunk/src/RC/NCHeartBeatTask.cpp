@@ -3,6 +3,7 @@
 #include "NCLoadBalance.h"
 #include "Resource.h"
 #include "protocol/RcNcProtocol.pb.h"
+#include "protocol/TaskType.h"
 #include "FWInstance.h"
 #include "FWIManager.h"
 
@@ -18,6 +19,7 @@ NCHeartBeatTask::NCHeartBeatTask():
 {
     setTaskState(NCHEARTBEATTASK_UPDATE_NCINFO);
     setDataString("");
+    setTaskType(NC_HEART_BEAT_TASK);
 }
 
 NCHeartBeatTask::~NCHeartBeatTask()

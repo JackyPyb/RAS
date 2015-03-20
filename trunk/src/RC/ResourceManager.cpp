@@ -44,6 +44,11 @@ NCLoadBalance* ResourceManager::createNCLB(const string &ip, const uint32_t tid)
         multimap<string, Resource>::iterator iter = resMap.find(ip);
         res = iter->second;
         pNCLB->setTotalNCRes(res);
+        
+        //to test
+        res = pNCLB->getTotalNCRes();
+        INFO_LOG("add to nc %s, total res cpu is %f, mem is %d",
+                ip.c_str(), res.logicCPUNum, res.cpuMemSize);
     }
 
     return pNCLB;
@@ -62,6 +67,11 @@ int ResourceManager::registerNC(const string &ip, const uint32_t aid, const uint
 
     addPlatformTotalRes(pNCLB->getTotalNCRes());
 
+    //to test
+    Resource res = getPlatformTotalRes();
+    INFO_LOG("Platform total res, cpu is %f, mem is %d",
+            res.logicCPUNum, res.cpuMemSize);
+
     addNCLBToSets(ip);
 
     if(!pNCLB->isNCOnline())
@@ -70,6 +80,7 @@ int ResourceManager::registerNC(const string &ip, const uint32_t aid, const uint
     }
 
     m_LBNum++;
+    INFO_LOG("NC NUM is %d now", m_LBNum);
 
     return SUCCESSFUL;
 }
@@ -257,12 +268,12 @@ string ResourceManager::getSuitableNCFromVec(const vector<string> &ips) const
     return string("");
 }
 
-void ResourceManager::sortNCLoadBalance()
-{
-    string ip = m_NCMapIterNow->first;
-    deleteNCLBInSets(ip);
-    addNCLBToSets(ip);
-}
+//void ResourceManager::sortNCLoadBalance()
+//{
+//    string ip = m_NCMapIterNow->first;
+//    deleteNCLBInSets(ip);
+//    addNCLBToSets(ip);
+//}
 
 int ResourceManager::dealNCCrash(const string &ip)
 {
@@ -273,14 +284,19 @@ bool ResourceManager::checkServiceIsOK() const
 {
     if(m_LBNum >= (ConfigManager::getInstance())->getMinNCNum())
     {
+        INFO_LOG("service is OK");
         return true;
     }
     else
+    {
+        INFO_LOG("service is not OK");
         return false;
+    }
 }
 
 void ResourceManager::setALFWMListenCreated(bool isListened)
 {
+    INFO_LOG("ResourceManager::setALFWMListenCreated %d", isListened);
     m_isALFWMListenCreated = isListened;
 }
 

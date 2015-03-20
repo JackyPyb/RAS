@@ -6,6 +6,7 @@
 #include "NCAgent.h"
 #include "ConfigManager.h"
 #include "protocol/RASCmdCode.h"
+#include "protocol/TaskType.h"
 
 #include "common/log/log.h"
 #include "common/comm/TaskManager.h"
@@ -17,13 +18,15 @@ namespace rc
 
 NCRegTask::NCRegTask()
 {
+    INFO_LOG("NCRegTask constructed");
     setTaskState(NCREGTASK_DOPARSE);
     setDataString("");
+    setTaskType(NC_REG_TASK);
 }
 
 NCRegTask::~NCRegTask()
 {
-
+    m_NCIP.clear();
 }
 
 int NCRegTask::goNext()
@@ -33,6 +36,7 @@ int NCRegTask::goNext()
     {
         case NCREGTASK_DOPARSE:
         {
+            INFO_LOG("NCREGTASK_DOPARSE");
             ret = doParse();
             setTaskState(NCREGTASK_REGISTER);
             ret = goNext();
@@ -40,6 +44,7 @@ int NCRegTask::goNext()
         }
         case NCREGTASK_REGISTER:
         {
+            INFO_LOG("NCREGTASK_REGISTER");
             ret = (ResourceManager::getInstance())->registerNC(
                     m_NCIP, m_NCAgentID, getID());
             sendAckToNC(ret);
@@ -57,6 +62,7 @@ int NCRegTask::goNext()
         }
         case NCREGTASK_CHECK_SERVICE:
         {
+            INFO_LOG("NCREGTASK_CHECK_SERVICE");
             if((ResourceManager::getInstance())->checkServiceIsOK())
             {
                 setTaskState(NCREGTASK_CREATE_ALFWMLISTEN);
@@ -71,6 +77,7 @@ int NCRegTask::goNext()
         }
         case NCREGTASK_CREATE_ALFWMLISTEN:
         {
+            INFO_LOG("NCREGTASK_CREATE_ALFWMLISTEN");
             if((ResourceManager::getInstance())->isALFWMListenCreated())
             {
                 setTaskState(NCREGTASK_FINISH_TASK);
@@ -125,12 +132,16 @@ int NCRegTask::doParse()
     {
         setNCIP(ncReg.nc_ip());
         setPort(ncReg.nc_port());
+        INFO_LOG("NC register ip is %s, port is %d", 
+                ncReg.nc_ip().c_str(), ncReg.nc_port());
 
         Resource res;
 
         RcNcProto::ResourceInfo resInfo = ncReg.machine_total_resource();
         res.logicCPUNum = resInfo.cpu_num();
         res.cpuMemSize = resInfo.cpu_mem_size();
+        INFO_LOG("NCRegTask::doParse: cpu is %f, mem is %d",
+                res.logicCPUNum, res.cpuMemSize);
 
         for(int j = 0; j < resInfo.gpu_resource_info_size(); j++)
         {
@@ -138,6 +149,8 @@ int NCRegTask::doParse()
             string gpuName = gpuResInfo.gpu_name();
             uint32_t gpuMemSize = gpuResInfo.gpu_mem_size();
             res.GPUInfo[gpuName] = gpuMemSize;
+            INFO_LOG("NC register gpu name is %s, gpu_mem is %d", 
+                    gpuName.c_str(), gpuMemSize);
         }
 
         multimap<string, Resource> resMap;

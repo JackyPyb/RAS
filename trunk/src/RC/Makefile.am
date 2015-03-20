@@ -56,7 +56,7 @@ __top_builddir__src_RC_librc_la_SOURCES = \
 										NCHeartBeatTask.h \
 										NCHeartBeatTask.cpp \
 										StartFWRootTask.h \
-										StartFWRootTask.cpp
+										StartFWRootTask.cpp 
 __top_builddir__src_RC_librc_la_LIBADD = \
 									$(top_srcdir)/lib/libcommon.la \
 			                     	$(top_srcdir)/lib/libprotocol.la

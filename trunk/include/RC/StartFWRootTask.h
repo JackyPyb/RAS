@@ -70,16 +70,41 @@ public:
         m_NCIP= ip;
     }
 
+    string getNCIP() const
+    {
+        return m_NCIP;
+    }
+
+    void setFWInstanceID(uint32_t fwInstanceID)
+    {
+        m_fwInstanceID = fwInstanceID;
+    }
+
+    uint32_t getFWInstanceID() const
+    {
+        return m_fwInstanceID;
+    }
+
+    void setALTaskID(uint64_t tid)
+    {
+        m_alTaskID = tid;
+    }
+
+    uint64_t getALTaskID() const
+    {
+        return m_alTaskID;
+    }
 
     void clearTaskPara();
 
+    AlProto::StartRootModule m_startRootModuleInfo; 
 private:    
     uint32_t m_ALAgentID;
     bool m_isRestart;
     uint32_t m_rootModuleID;
     string m_NCIP;
     uint32_t m_fwInstanceID;
-    AlProto::StartRootModule m_startRootModuleInfo; 
+    uint64_t m_alTaskID;
 };
 
 }

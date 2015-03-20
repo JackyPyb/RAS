@@ -171,7 +171,7 @@ public:
     string getSuitableNCByMem(const Resource&) const;
     string getSuitableNCByCPU(const Resource&) const;
     string getSuitableNCFromVec(const vector<string>&) const;
-    void sortNCLoadBalance();
+//    void sortNCLoadBalance();
     int dealNCCrash(const string&);
     bool checkServiceIsOK() const;
     void setALFWMListenCreated(bool);
@@ -193,7 +193,7 @@ private:
     bool m_isALFWMListenCreated;
     Resource m_platformTotalRes;
 
-    NCMapIter m_NCMapIterNow;
+//    NCMapIter m_NCMapIterNow;
 
 };    
 

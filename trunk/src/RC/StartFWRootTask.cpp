@@ -3,9 +3,15 @@
 #include "FWIManager.h"
 #include "FWInstance.h"
 #include "ResourceScheduler.h"
+#include "protocol/TaskType.h"
+#include "ALAgent.h"
+#include "protocol/RcNcProtocol.pb.h"
+#include "protocol/RASCmdCode.h"
 
 #include "common/log/log.h"
 #include "common/comm/Error.h"
+#include "common/comm/TaskManager.h"
+#include "common/comm/AgentManager.h"
 
 namespace rc
 {
@@ -18,6 +24,7 @@ StartFWRootTask::StartFWRootTask():
 {
     setTaskState(STARTFWROOTTASK_DOPARSE);
     setDataString("");
+    setTaskType(START_FW_ROOT_TASK);
 }
 
 StartFWRootTask::~StartFWRootTask()
@@ -66,7 +73,8 @@ int StartFWRootTask::goNext()
                 AlProto::GpuResourceInfo gpuRes = 
                     rootRes.gpu_resource_info(i);
                 string name = gpuRes.gpu_name();
-                gpuMap.insert(std::pair<string, uint32_t>(name, gpuRes.gpu_mem_size()));
+                gpuMap.insert(std::pair<string, uint32_t>(
+                            name, gpuRes.gpu_mem_size()));
             }
             pFWInstance->setRootGPUInfo(gpuMap);
 
@@ -86,12 +94,31 @@ int StartFWRootTask::goNext()
         {
             (ResourceScheduler::getInstance())->scheduleTask(getID());
             setTaskState(STARTFWROOTTASK_WAIT_NC_ACK);
-            goNext();
             break;
         }
         case STARTFWROOTTASK_WAIT_NC_ACK:
         {
+            RcNcProto::RespondStartFrameworkRoot startRootAck;
+            startRootAck.ParseFromString(getDataString());
+            uint32_t processID = startRootAck.root_pid();
+            FWInstance *pFWInstance = 
+                (FWIManager::getInstance())->get(getFWInstanceID());
+            pFWInstance->setModuleIPProcess(
+                    getRootModuleID(),
+                    getNCIP(),
+                    processID);
 
+            sendResultToAL(SUCCESSFUL);
+            setTaskState(STARTFWROOTTASK_FINISH_TASK);
+            goNext();
+            break;
+        }
+        case STARTFWROOTTASK_FINISH_TASK:
+        {
+            INFO_LOG("Start root finish!");
+            clearTaskPara();
+            (TaskManager::getInstance())->recycle(getID());
+            break;
         }
         default:
             ret = FAILED;
@@ -136,7 +163,38 @@ int StartFWRootTask::setTaskSchedulerType()
 
 int StartFWRootTask::sendResultToAL(uint32_t ret)
 {
-    return SUCCESSFUL;
+    MsgHeader msg;
+    msg.cmd = MSG_AL_RC_START_ROOT_MODULE_ACK;
+    string data = "";
+    if(ret >= 0)
+    {
+        AlProto::FrameworkInstanceInfo fwInstance;
+        FWInstance *pFWInstance = 
+            (FWIManager::getInstance())->get(getFWInstanceID());
+        fwInstance.set_framework_id(pFWInstance->getFrameworkID());
+        fwInstance.set_framework_instance_id(getFWInstanceID());
+        fwInstance.SerializeToString(&data);
+        msg.length = data.length();
+        msg.error = SUCCESSFUL;
+    }
+    else
+    {
+        msg.length = 0;
+        msg.error = FAILED;
+    }
+
+    msg.para1 = m_alTaskID;
+    msg.para2 = m_alTaskID >> 32;
+
+    ALAgent *pAgent = dynamic_cast<ALAgent*>(
+            (AgentManager::getInstance())->get(getAgentID()));
+    if(pAgent == NULL)
+    {
+        ERROR_LOG("StartFWRootTask::sendResultToAL: not found agent");
+        return FAILED;
+    }
+
+    return pAgent->sendPackage(msg, data);
 }
 
 void StartFWRootTask::clearTaskPara()

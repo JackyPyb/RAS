@@ -46,52 +46,44 @@ void NCLoadBalance::registerOn(const uint32_t aid)
     m_pInfoSendToNC = new InfoSendToNC(m_NCAgentID);
 }
 
-int NCLoadBalance::checkForAddTask(Task* pTask)
-{
-    return SUCCESSFUL;
-}
+//int NCLoadBalance::checkForAddTask(Task* pTask)
+//{
+//    return SUCCESSFUL;
+//}
 
 int NCLoadBalance::sendTaskToNC(Task *pTask)
 {
     return m_pInfoSendToNC->sendTaskToNC(pTask);
 }
 
-void NCLoadBalance::setFWInstance(const list<uint32_t>& FWInstanceList)
+void NCLoadBalance::setFWInstance(const set<uint32_t>& FWInstanceSet)
 {
-    m_FWInstanceList = FWInstanceList;
+    m_FWInstanceSet = FWInstanceSet;
 }
 
 bool NCLoadBalance::addFWInstance(const uint32_t FWInstance)
 {
-    bool ret = false;
-    ListIter listIter = find(m_FWInstanceList.begin(), m_FWInstanceList.end(), 
-            FWInstance);
-    if(listIter == m_FWInstanceList.end())
-    {
-        ret = true;
-        m_FWInstanceList.push_back(FWInstance);
-    }
-
-    return ret;
+    m_FWInstanceSet.insert(FWInstance);
+    return SUCCESSFUL;
 }
 
 bool NCLoadBalance::delFWInstance(const uint32_t FWInstance)
 {
     bool ret = false;
-    ListIter listIter = find(m_FWInstanceList.begin(), m_FWInstanceList.end(), 
+    SetIter setIter = find(m_FWInstanceSet.begin(), m_FWInstanceSet.end(), 
             FWInstance);
-    if(listIter != m_FWInstanceList.end())
+    if(setIter != m_FWInstanceSet.end())
     {
         ret = true;
-        m_FWInstanceList.erase(listIter);
+        m_FWInstanceSet.erase(setIter);
     }
 
     return ret;
 }
 
-list<uint32_t> NCLoadBalance::getFWInstance() const
+set<uint32_t> NCLoadBalance::getFWInstance() const
 {
-    return m_FWInstanceList;
+    return m_FWInstanceSet;
 }
 
 void NCLoadBalance::setTotalNCRes(const Resource &totalRes)

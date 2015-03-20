@@ -1,0 +1,244 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ALAgent	ALAgent.cpp	/^ALAgent::ALAgent(const TCPSocket &sock,$/;"	f	class:rc::ALAgent
+ConfigManager	ConfigManager.cpp	/^ConfigManager::ConfigManager():$/;"	f	class:rc::ConfigManager
+FWIManager	FWIManager.cpp	/^FWIManager::FWIManager():$/;"	f	class:rc::FWIManager
+FWInstance	FWInstance.cpp	/^FWInstance::FWInstance():$/;"	f	class:rc::FWInstance
+FWInstance	FWInstance.cpp	/^FWInstance::FWInstance(const uint32_t id):$/;"	f	class:rc::FWInstance
+FWMAgent	FWMAgent.cpp	/^FWMAgent::FWMAgent(const TCPSocket &sock,$/;"	f	class:rc::FWMAgent
+FWMHeartBeatTimer	FWMHeartBeatTimer.cpp	/^FWMHeartBeatTimer::FWMHeartBeatTimer($/;"	f	class:rc::FWMHeartBeatTimer
+GeneralIDGenerator	main.cpp	/^        GeneralIDGenerator():m_ID(0){}$/;"	f	class:GeneralIDGenerator
+GeneralIDGenerator	main.cpp	/^class GeneralIDGenerator$/;"	c	file:
+InfoFromFWMToRC	InfoFromFWMToRC.cpp	/^InfoFromFWMToRC::InfoFromFWMToRC(uint32_t aid, string ip, $/;"	f	class:rc::InfoFromFWMToRC
+InfoFromNCToRC	InfoFromNCToRC.cpp	/^InfoFromNCToRC::InfoFromNCToRC(uint32_t aid, string ip):$/;"	f	class:rc::InfoFromNCToRC
+InfoSendToFWM	InfoSendToFWM.cpp	/^InfoSendToFWM::InfoSendToFWM(uint32_t aid):$/;"	f	class:rc::InfoSendToFWM
+InfoSendToNC	InfoSendToNC.cpp	/^InfoSendToNC::InfoSendToNC(uint32_t aid):$/;"	f	class:rc::InfoSendToNC
+NCAgent	NCAgent.cpp	/^NCAgent::NCAgent(const TCPSocket &sock,$/;"	f	class:rc::NCAgent
+NCCallBack	ResourceScheduler.cpp	/^int ResourceScheduler::NCCallBack(string ip, uint64_t tid, uint32_t err)$/;"	f	class:rc::ResourceScheduler
+NCHeartBeatTask	NCHeartBeatTask.cpp	/^NCHeartBeatTask::NCHeartBeatTask():$/;"	f	class:rc::NCHeartBeatTask
+NCHeartBeatTimer	NCHeartBeatTimer.cpp	/^NCHeartBeatTimer::NCHeartBeatTimer($/;"	f	class:rc::NCHeartBeatTimer
+NCListen	RunControl.cpp	/^void RunControl::NCListen(void)$/;"	f	class:rc::RunControl
+NCLoadBalance	NCLoadBalance.cpp	/^NCLoadBalance::NCLoadBalance():$/;"	f	class:rc::NCLoadBalance
+NCLoadBalance	NCLoadBalance.cpp	/^NCLoadBalance::NCLoadBalance(string ip):$/;"	f	class:rc::NCLoadBalance
+NCOffLine	ResourceManager.cpp	/^int ResourceManager::NCOffLine(const string &ip)$/;"	f	class:rc::ResourceManager
+NCRegTask	NCRegTask.cpp	/^NCRegTask::NCRegTask()$/;"	f	class:rc::NCRegTask
+ResourceManager	ResourceManager.cpp	/^ResourceManager::ResourceManager():$/;"	f	class:rc::ResourceManager
+ResourceScheduler	ResourceScheduler.cpp	/^ResourceScheduler::ResourceScheduler()    $/;"	f	class:rc::ResourceScheduler
+RunControl	RunControl.cpp	/^RunControl::RunControl()$/;"	f	class:rc::RunControl
+SASAgent	SASAgent.cpp	/^SASAgent::SASAgent(const TCPSocket &sock,$/;"	f	class:rc::SASAgent
+SASListen	RunControl.cpp	/^void RunControl::SASListen(void)$/;"	f	class:rc::RunControl
+StartFWRootTask	StartFWRootTask.cpp	/^StartFWRootTask::StartFWRootTask():$/;"	f	class:rc::StartFWRootTask
+StrategyManager	StrategyManager.cpp	/^StrategyManager::StrategyManager():$/;"	f	class:rc::StrategyManager
+add	FWIManager.cpp	/^uint32_t FWIManager::add(FWInstance *fwinstance)$/;"	f	class:rc::FWIManager
+addApplyRes	NCLoadBalance.cpp	/^bool NCLoadBalance::addApplyRes(const Resource &res)$/;"	f	class:rc::NCLoadBalance
+addFWInstance	NCLoadBalance.cpp	/^bool NCLoadBalance::addFWInstance(const uint32_t FWInstance)$/;"	f	class:rc::NCLoadBalance
+addModule	FWInstance.cpp	/^bool FWInstance::addModule(const uint32_t parentID, const uint32_t childID)$/;"	f	class:rc::FWInstance
+addNCApplyRes	FWInstance.cpp	/^bool FWInstance::addNCApplyRes(const string &ip, const Resource &addApplyRes)$/;"	f	class:rc::FWInstance
+addNCLB	ResourceManager.cpp	/^bool ResourceManager::addNCLB(const string &ip, NCLoadBalance* ncLoadBalance)$/;"	f	class:rc::ResourceManager
+addNCLBToSets	ResourceManager.cpp	/^bool ResourceManager::addNCLBToSets(const string &ip)$/;"	f	class:rc::ResourceManager
+addPlatformTotalRes	ResourceManager.cpp	/^bool ResourceManager::addPlatformTotalRes(const Resource &res)$/;"	f	class:rc::ResourceManager
+addRootModule	FWInstance.cpp	/^bool FWInstance::addRootModule(const uint32_t moduleID)$/;"	f	class:rc::FWInstance
+addStrategy	StrategyManager.cpp	/^uint32_t StrategyManager::addStrategy(Strategy *pStrategy, uint32_t id)$/;"	f	class:rc::StrategyManager
+changeNCApplyRes	FWInstance.cpp	/^void FWInstance::changeNCApplyRes(const string &ip, const Resource &applyRes)$/;"	f	class:rc::FWInstance
+changeNCLBInSets	ResourceManager.cpp	/^bool ResourceManager::changeNCLBInSets(const string &ip)$/;"	f	class:rc::ResourceManager
+checkServiceIsOK	ResourceManager.cpp	/^bool ResourceManager::checkServiceIsOK() const$/;"	f	class:rc::ResourceManager
+clearTaskPara	NCHeartBeatTask.cpp	/^void NCHeartBeatTask::clearTaskPara()$/;"	f	class:rc::NCHeartBeatTask
+clearTaskPara	NCRegTask.cpp	/^void NCRegTask::clearTaskPara()$/;"	f	class:rc::NCRegTask
+clearTaskPara	StartFWRootTask.cpp	/^void StartFWRootTask::clearTaskPara()$/;"	f	class:rc::StartFWRootTask
+configWithXML	ConfigManager.cpp	/^int ConfigManager::configWithXML(const char *configFileName)$/;"	f	class:rc::ConfigManager
+createFWInstance	FWIManager.cpp	/^FWInstance* FWIManager::createFWInstance()$/;"	f	class:rc::FWIManager
+createNCLB	ResourceManager.cpp	/^NCLoadBalance* ResourceManager::createNCLB(const string &ip, const uint32_t tid)$/;"	f	class:rc::ResourceManager
+dealNCCrash	ResourceManager.cpp	/^int ResourceManager::dealNCCrash(const string &ip)$/;"	f	class:rc::ResourceManager
+delAllModules	FWInstance.cpp	/^bool FWInstance::delAllModules(const uint32_t rootModuleID)$/;"	f	class:rc::FWInstance
+delApplyRes	NCLoadBalance.cpp	/^bool NCLoadBalance::delApplyRes(const Resource &res)$/;"	f	class:rc::NCLoadBalance
+delFWInstance	NCLoadBalance.cpp	/^bool NCLoadBalance::delFWInstance(const uint32_t FWInstance)$/;"	f	class:rc::NCLoadBalance
+delModule	FWInstance.cpp	/^bool FWInstance::delModule(const uint32_t id)$/;"	f	class:rc::FWInstance
+delNCApplyRes	FWInstance.cpp	/^bool FWInstance::delNCApplyRes(const string &ip, const Resource &delApplyRes)$/;"	f	class:rc::FWInstance
+delPlatformTotalRes	ResourceManager.cpp	/^bool ResourceManager::delPlatformTotalRes(const Resource &res)$/;"	f	class:rc::ResourceManager
+deleteNCLB	ResourceManager.cpp	/^bool ResourceManager::deleteNCLB(const string &ip)$/;"	f	class:rc::ResourceManager
+deleteNCLBInSets	ResourceManager.cpp	/^bool ResourceManager::deleteNCLBInSets(const string &ip)$/;"	f	class:rc::ResourceManager
+deleteStrategy	StrategyManager.cpp	/^bool StrategyManager::deleteStrategy(const uint32_t sid)$/;"	f	class:rc::StrategyManager
+dispatch	GetNCFromAll.cpp	/^int GetNCFromAll::dispatch(Task *pTask)$/;"	f	class:rc::GetNCFromAll
+dispatch	GetNCFromOne.cpp	/^int GetNCFromOne::dispatch(Task *pTask)$/;"	f	class:rc::GetNCFromOne
+doAction	FWMHeartBeatTimer.cpp	/^int FWMHeartBeatTimer::doAction()$/;"	f	class:rc::FWMHeartBeatTimer
+doAction	NCHeartBeatTimer.cpp	/^int NCHeartBeatTimer::doAction()$/;"	f	class:rc::NCHeartBeatTimer
+doParse	NCRegTask.cpp	/^int NCRegTask::doParse()$/;"	f	class:rc::NCRegTask
+doParse	StartFWRootTask.cpp	/^int StartFWRootTask::doParse()$/;"	f	class:rc::StartFWRootTask
+doRegister	InfoFromFWMToRC.cpp	/^int InfoFromFWMToRC::doRegister(uint64_t tid, string str)$/;"	f	class:rc::InfoFromFWMToRC
+doRegister	InfoFromNCToRC.cpp	/^int InfoFromNCToRC::doRegister(uint64_t tid, const string &str)$/;"	f	class:rc::InfoFromNCToRC
+epollRun	RunControl.cpp	/^void RunControl::epollRun(void)$/;"	f	class:rc::RunControl
+find	FWIManager.cpp	/^bool FWIManager::find(uint32_t id) const$/;"	f	class:rc::FWIManager
+findNCLB	ResourceManager.cpp	/^bool ResourceManager::findNCLB(const string &ip)$/;"	f	class:rc::ResourceManager
+g_pEpoll	main.cpp	/^Epoll *g_pEpoll = NULL;$/;"	v
+g_pTimerManager	main.cpp	/^TimerManager *g_pTimerManager = NULL;$/;"	v
+generateInstanceID	FWIManager.cpp	/^uint32_t FWIManager::generateInstanceID()$/;"	f	class:rc::FWIManager
+generateModuleID	FWIManager.cpp	/^uint32_t FWIManager::generateModuleID()$/;"	f	class:rc::FWIManager
+generateStrategyID	StrategyManager.cpp	/^uint32_t StrategyManager::generateStrategyID()$/;"	f	class:rc::StrategyManager
+get	FWIManager.cpp	/^FWInstance* FWIManager::get(uint32_t id) const$/;"	f	class:rc::FWIManager
+getALListenAddr	ConfigManager.cpp	/^SocketAddress ConfigManager::getALListenAddr() const$/;"	f	class:rc::ConfigManager
+getActualRemainRes	NCLoadBalance.cpp	/^Resource NCLoadBalance::getActualRemainRes() const$/;"	f	class:rc::NCLoadBalance
+getActualUseRes	NCLoadBalance.cpp	/^Resource NCLoadBalance::getActualUseRes() const$/;"	f	class:rc::NCLoadBalance
+getApplyRes	NCLoadBalance.cpp	/^Resource NCLoadBalance::getApplyRes() const$/;"	f	class:rc::NCLoadBalance
+getEachNCActualUseRes	FWInstance.cpp	/^map<string, Resource> FWInstance::getEachNCActualUseRes() const$/;"	f	class:rc::FWInstance
+getEachNCApplyRes	FWInstance.cpp	/^map<string, Resource> FWInstance::getEachNCApplyRes() const$/;"	f	class:rc::FWInstance
+getEpollMaxFd	ConfigManager.cpp	/^unsigned int ConfigManager::getEpollMaxFd() const$/;"	f	class:rc::ConfigManager
+getFWInstance	NCLoadBalance.cpp	/^set<uint32_t> NCLoadBalance::getFWInstance() const$/;"	f	class:rc::NCLoadBalance
+getFWInstanceID	FWInstance.cpp	/^uint32_t FWInstance::getFWInstanceID() const$/;"	f	class:rc::FWInstance
+getFWMListenAddr	ConfigManager.cpp	/^SocketAddress ConfigManager::getFWMListenAddr() const$/;"	f	class:rc::ConfigManager
+getFWMRootHeartBeatRetryNum	ConfigManager.cpp	/^unsigned int ConfigManager::getFWMRootHeartBeatRetryNum() const$/;"	f	class:rc::ConfigManager
+getFWMRootHeartBeatTimeOut	ConfigManager.cpp	/^unsigned int ConfigManager::getFWMRootHeartBeatTimeOut() const$/;"	f	class:rc::ConfigManager
+getFrameworkID	FWInstance.cpp	/^uint32_t FWInstance::getFrameworkID() const$/;"	f	class:rc::FWInstance
+getIsClosing	FWInstance.cpp	/^bool FWInstance::getIsClosing() const$/;"	f	class:rc::FWInstance
+getLBNum	ResourceManager.cpp	/^uint32_t ResourceManager::getLBNum() const$/;"	f	class:rc::ResourceManager
+getMinNCNum	ConfigManager.cpp	/^unsigned int ConfigManager::getMinNCNum() const$/;"	f	class:rc::ConfigManager
+getModuleIPProcess	FWInstance.cpp	/^IPProcess FWInstance::getModuleIPProcess(const uint32_t moduleID) const$/;"	f	class:rc::FWInstance
+getNCActualUseRes	FWInstance.cpp	/^Resource FWInstance::getNCActualUseRes(const string &ip) const$/;"	f	class:rc::FWInstance
+getNCApplyRes	FWInstance.cpp	/^Resource FWInstance::getNCApplyRes(const string &ip)$/;"	f	class:rc::FWInstance
+getNCHeartBeatRetryNum	ConfigManager.cpp	/^unsigned int ConfigManager::getNCHeartBeatRetryNum() const$/;"	f	class:rc::ConfigManager
+getNCHeartBeatTimeOut	ConfigManager.cpp	/^unsigned int ConfigManager::getNCHeartBeatTimeOut() const$/;"	f	class:rc::ConfigManager
+getNCLB	ResourceManager.cpp	/^NCLoadBalance* ResourceManager::getNCLB(const string &ip)$/;"	f	class:rc::ResourceManager
+getNCListenAddr	ConfigManager.cpp	/^SocketAddress ConfigManager::getNCListenAddr() const$/;"	f	class:rc::ConfigManager
+getNotApplyRes	NCLoadBalance.cpp	/^Resource NCLoadBalance::getNotApplyRes() const$/;"	f	class:rc::NCLoadBalance
+getPlatformTotalRes	ResourceManager.cpp	/^Resource ResourceManager::getPlatformTotalRes() const$/;"	f	class:rc::ResourceManager
+getQueryEntry	FWInstance.cpp	/^QueryEntry FWInstance::getQueryEntry() const$/;"	f	class:rc::FWInstance
+getRetryNum	FWMHeartBeatTimer.cpp	/^unsigned int FWMHeartBeatTimer::getRetryNum() const$/;"	f	class:rc::FWMHeartBeatTimer
+getRetryNum	NCHeartBeatTimer.cpp	/^unsigned int NCHeartBeatTimer::getRetryNum() const$/;"	f	class:rc::NCHeartBeatTimer
+getRootGPUInfo	FWInstance.cpp	/^multimap<string, uint32_t> FWInstance::getRootGPUInfo() const$/;"	f	class:rc::FWInstance
+getRootLogicCPUNum	FWInstance.cpp	/^double FWInstance::getRootLogicCPUNum() const$/;"	f	class:rc::FWInstance
+getRootMemSize	FWInstance.cpp	/^uint32_t FWInstance::getRootMemSize() const$/;"	f	class:rc::FWInstance
+getRootModuleID	FWInstance.cpp	/^uint32_t FWInstance::getRootModuleID() const$/;"	f	class:rc::FWInstance
+getSASListenAddr	ConfigManager.cpp	/^SocketAddress ConfigManager::getSASListenAddr() const$/;"	f	class:rc::ConfigManager
+getStrategy	StrategyManager.cpp	/^Strategy* StrategyManager::getStrategy(const uint32_t sid)$/;"	f	class:rc::StrategyManager
+getSuitableNCByCPU	ResourceManager.cpp	/^string ResourceManager::getSuitableNCByCPU(const Resource &res) const$/;"	f	class:rc::ResourceManager
+getSuitableNCByMem	ResourceManager.cpp	/^string ResourceManager::getSuitableNCByMem(const Resource &res) const$/;"	f	class:rc::ResourceManager
+getSuitableNCFromVec	ResourceManager.cpp	/^string ResourceManager::getSuitableNCFromVec(const vector<string> &ips) const$/;"	f	class:rc::ResourceManager
+getTotalActualUseRes	FWInstance.cpp	/^Resource FWInstance::getTotalActualUseRes() const$/;"	f	class:rc::FWInstance
+getTotalApplyRes	FWInstance.cpp	/^Resource FWInstance::getTotalApplyRes() const$/;"	f	class:rc::FWInstance
+getTotalNCRes	NCLoadBalance.cpp	/^Resource NCLoadBalance::getTotalNCRes() const$/;"	f	class:rc::NCLoadBalance
+goNext	NCHeartBeatTask.cpp	/^int NCHeartBeatTask::goNext()$/;"	f	class:rc::NCHeartBeatTask
+goNext	NCRegTask.cpp	/^int NCRegTask::goNext()$/;"	f	class:rc::NCRegTask
+goNext	StartFWRootTask.cpp	/^int StartFWRootTask::goNext()$/;"	f	class:rc::StartFWRootTask
+handleFWMReq	InfoFromFWMToRC.cpp	/^int InfoFromFWMToRC::handleFWMReq(InReq &req)$/;"	f	class:rc::InfoFromFWMToRC
+handleNCReq	InfoFromNCToRC.cpp	/^int InfoFromNCToRC::handleNCReq(InReq &req)$/;"	f	class:rc::InfoFromNCToRC
+init	FWMAgent.cpp	/^int FWMAgent::init(void)$/;"	f	class:rc::FWMAgent
+init	NCAgent.cpp	/^int NCAgent::init(void)$/;"	f	class:rc::NCAgent
+init	StrategyManager.cpp	/^void StrategyManager::init()$/;"	f	class:rc::StrategyManager
+isALFWMListenCreated	ResourceManager.cpp	/^bool ResourceManager::isALFWMListenCreated() const$/;"	f	class:rc::ResourceManager
+m_ID	main.cpp	/^        uint64_t m_ID;$/;"	m	class:GeneralIDGenerator	file:
+main	main.cpp	/^int main(int argc, char *argv[])$/;"	f
+mergeID	ALAgent.cpp	/^uint64_t ALAgent::mergeID(uint32_t low, uint32_t high) const$/;"	f	class:rc::ALAgent
+mergeID	InfoFromFWMToRC.cpp	/^uint64_t InfoFromFWMToRC::mergeID(uint32_t low, uint32_t high) const$/;"	f	class:rc::InfoFromFWMToRC
+mergeID	InfoFromNCToRC.cpp	/^uint64_t InfoFromNCToRC::mergeID(uint32_t low, uint32_t high) const$/;"	f	class:rc::InfoFromNCToRC
+operator ()	main.cpp	/^        uint64_t operator()(void)$/;"	f	class:GeneralIDGenerator
+rc	ALAgent.cpp	/^namespace rc$/;"	n	file:
+rc	ConfigManager.cpp	/^namespace rc$/;"	n	file:
+rc	FWIManager.cpp	/^namespace rc$/;"	n	file:
+rc	FWInstance.cpp	/^namespace rc$/;"	n	file:
+rc	FWMAgent.cpp	/^namespace rc$/;"	n	file:
+rc	FWMHeartBeatTimer.cpp	/^namespace rc$/;"	n	file:
+rc	GetNCFromAll.cpp	/^namespace rc$/;"	n	file:
+rc	GetNCFromOne.cpp	/^namespace rc$/;"	n	file:
+rc	InfoFromFWMToRC.cpp	/^namespace rc$/;"	n	file:
+rc	InfoFromNCToRC.cpp	/^namespace rc$/;"	n	file:
+rc	InfoSendToFWM.cpp	/^namespace rc$/;"	n	file:
+rc	InfoSendToNC.cpp	/^namespace rc$/;"	n	file:
+rc	NCAgent.cpp	/^namespace rc$/;"	n	file:
+rc	NCHeartBeatTask.cpp	/^namespace rc$/;"	n	file:
+rc	NCHeartBeatTimer.cpp	/^namespace rc$/;"	n	file:
+rc	NCLoadBalance.cpp	/^namespace rc$/;"	n	file:
+rc	NCRegTask.cpp	/^namespace rc$/;"	n	file:
+rc	ResourceManager.cpp	/^namespace rc$/;"	n	file:
+rc	ResourceScheduler.cpp	/^namespace rc$/;"	n	file:
+rc	RunControl.cpp	/^namespace rc$/;"	n	file:
+rc	SASAgent.cpp	/^namespace rc$/;"	n	file:
+rc	StartFWRootTask.cpp	/^namespace rc$/;"	n	file:
+rc	StrategyManager.cpp	/^namespace rc$/;"	n	file:
+readBack	ALAgent.cpp	/^void ALAgent::readBack(InReq &req)$/;"	f	class:rc::ALAgent
+readBack	FWMAgent.cpp	/^void FWMAgent::readBack(InReq &req)$/;"	f	class:rc::FWMAgent
+readBack	NCAgent.cpp	/^void NCAgent::readBack(InReq &req)$/;"	f	class:rc::NCAgent
+readBack	SASAgent.cpp	/^void SASAgent::readBack(InReq &req)$/;"	f	class:rc::SASAgent
+recycle	FWIManager.cpp	/^void FWIManager::recycle(uint32_t id)$/;"	f	class:rc::FWIManager
+recycleAll	FWIManager.cpp	/^void FWIManager::recycleAll()$/;"	f	class:rc::FWIManager
+recycler	ALAgent.cpp	/^void ALAgent::recycler(void)$/;"	f	class:rc::ALAgent
+recycler	FWMAgent.cpp	/^void FWMAgent::recycler(void)$/;"	f	class:rc::FWMAgent
+recycler	NCAgent.cpp	/^void NCAgent::recycler(void)$/;"	f	class:rc::NCAgent
+recycler	SASAgent.cpp	/^void SASAgent::recycler(void)$/;"	f	class:rc::SASAgent
+registerNC	ResourceManager.cpp	/^int ResourceManager::registerNC(const string &ip, const uint32_t aid, const uint32_t tid)$/;"	f	class:rc::ResourceManager
+registerOn	NCLoadBalance.cpp	/^void NCLoadBalance::registerOn(const uint32_t aid)$/;"	f	class:rc::NCLoadBalance
+remove	FWIManager.cpp	/^bool FWIManager::remove(uint32_t id)$/;"	f	class:rc::FWIManager
+resetRetryNum	FWMHeartBeatTimer.cpp	/^void FWMHeartBeatTimer::resetRetryNum()$/;"	f	class:rc::FWMHeartBeatTimer
+resetRetryNum	NCHeartBeatTimer.cpp	/^void NCHeartBeatTimer::resetRetryNum()$/;"	f	class:rc::NCHeartBeatTimer
+run	RunControl.cpp	/^void RunControl::run(void)$/;"	f	class:rc::RunControl
+runRC	RunControl.cpp	/^void RunControl::runRC(void)$/;"	f	class:rc::RunControl
+scheduleTask	ResourceScheduler.cpp	/^int ResourceScheduler::scheduleTask(uint64_t tid)$/;"	f	class:rc::ResourceScheduler
+sendAckToFWM	InfoFromFWMToRC.cpp	/^void InfoFromFWMToRC::sendAckToFWM($/;"	f	class:rc::InfoFromFWMToRC
+sendAckToNC	InfoFromNCToRC.cpp	/^void InfoFromNCToRC::sendAckToNC($/;"	f	class:rc::InfoFromNCToRC
+sendAckToNC	NCRegTask.cpp	/^int NCRegTask::sendAckToNC(int ret)$/;"	f	class:rc::NCRegTask
+sendPackage	ALAgent.cpp	/^int ALAgent::sendPackage(MsgHeader &msg, string data)$/;"	f	class:rc::ALAgent
+sendPackage	FWMAgent.cpp	/^int FWMAgent::sendPackage(MsgHeader &msg, string data)$/;"	f	class:rc::FWMAgent
+sendPackage	NCAgent.cpp	/^int NCAgent::sendPackage(MsgHeader &msg, string data)$/;"	f	class:rc::NCAgent
+sendPackage	SASAgent.cpp	/^int SASAgent::sendPackage(MsgHeader &msg, string data)$/;"	f	class:rc::SASAgent
+sendResultToAL	StartFWRootTask.cpp	/^int StartFWRootTask::sendResultToAL(uint32_t ret)$/;"	f	class:rc::StartFWRootTask
+sendTaskToFWM	InfoSendToFWM.cpp	/^int InfoSendToFWM::sendTaskToFWM(Task *pTask)$/;"	f	class:rc::InfoSendToFWM
+sendTaskToNC	InfoSendToNC.cpp	/^int InfoSendToNC::sendTaskToNC(Task *pTask)$/;"	f	class:rc::InfoSendToNC
+sendTaskToNC	NCLoadBalance.cpp	/^int NCLoadBalance::sendTaskToNC(Task *pTask)$/;"	f	class:rc::NCLoadBalance
+setALFWMListenCreated	ResourceManager.cpp	/^void ResourceManager::setALFWMListenCreated(bool isListened)$/;"	f	class:rc::ResourceManager
+setActualRemainRes	NCLoadBalance.cpp	/^bool NCLoadBalance::setActualRemainRes(const Resource &res)$/;"	f	class:rc::NCLoadBalance
+setActualUseRes	NCLoadBalance.cpp	/^bool NCLoadBalance::setActualUseRes(const Resource &res)$/;"	f	class:rc::NCLoadBalance
+setEachNCActualUseRes	FWInstance.cpp	/^void FWInstance::setEachNCActualUseRes(const map<string, Resource> &resMap)$/;"	f	class:rc::FWInstance
+setEachNCApplyRes	FWInstance.cpp	/^void FWInstance::setEachNCApplyRes(const map<string, Resource> &resMap)$/;"	f	class:rc::FWInstance
+setFWInstance	NCLoadBalance.cpp	/^void NCLoadBalance::setFWInstance(const set<uint32_t>& FWInstanceSet)$/;"	f	class:rc::NCLoadBalance
+setFWInstanceID	FWInstance.cpp	/^void FWInstance::setFWInstanceID(const uint32_t id)$/;"	f	class:rc::FWInstance
+setFrameworkID	FWInstance.cpp	/^void FWInstance::setFrameworkID(const uint32_t id)$/;"	f	class:rc::FWInstance
+setIsClosing	FWInstance.cpp	/^void FWInstance::setIsClosing(bool isClosing)$/;"	f	class:rc::FWInstance
+setModuleIPProcess	FWInstance.cpp	/^void FWInstance::setModuleIPProcess(const uint32_t moduleID,$/;"	f	class:rc::FWInstance
+setMsgHeader	ALAgent.cpp	/^void ALAgent::setMsgHeader($/;"	f	class:rc::ALAgent
+setMsgHeader	FWMAgent.cpp	/^void FWMAgent::setMsgHeader($/;"	f	class:rc::FWMAgent
+setMsgHeader	InfoSendToFWM.cpp	/^void InfoSendToFWM::setMsgHeader(uint32_t cmd, uint32_t len, uint64_t tid)$/;"	f	class:rc::InfoSendToFWM
+setMsgHeader	InfoSendToNC.cpp	/^void InfoSendToNC::setMsgHeader(uint32_t cmd, uint32_t len, uint64_t tid)$/;"	f	class:rc::InfoSendToNC
+setMsgHeader	NCAgent.cpp	/^void NCAgent::setMsgHeader($/;"	f	class:rc::NCAgent
+setMsgHeader	SASAgent.cpp	/^void SASAgent::setMsgHeader($/;"	f	class:rc::SASAgent
+setNCActualUseRes	FWInstance.cpp	/^void FWInstance::setNCActualUseRes(const string &ip, $/;"	f	class:rc::FWInstance
+setPlatformTotalRes	ResourceManager.cpp	/^void ResourceManager::setPlatformTotalRes(const Resource &res)$/;"	f	class:rc::ResourceManager
+setQueryEntry	FWInstance.cpp	/^void FWInstance::setQueryEntry(const string &ip, const uint32_t port)$/;"	f	class:rc::FWInstance
+setRetryNum	FWMHeartBeatTimer.cpp	/^void FWMHeartBeatTimer::setRetryNum(unsigned int num)$/;"	f	class:rc::FWMHeartBeatTimer
+setRetryNum	NCHeartBeatTimer.cpp	/^void NCHeartBeatTimer::setRetryNum(unsigned int num)$/;"	f	class:rc::NCHeartBeatTimer
+setRootGPUInfo	FWInstance.cpp	/^void FWInstance::setRootGPUInfo(const multimap<string, uint32_t> &gpuInfo)$/;"	f	class:rc::FWInstance
+setRootLogicCPUNum	FWInstance.cpp	/^void FWInstance::setRootLogicCPUNum(const double logicCPUNum)$/;"	f	class:rc::FWInstance
+setRootMemSize	FWInstance.cpp	/^void FWInstance::setRootMemSize(const uint32_t memSize)$/;"	f	class:rc::FWInstance
+setRootModuleID	FWInstance.cpp	/^void FWInstance::setRootModuleID(const uint32_t rootModuleID)$/;"	f	class:rc::FWInstance
+setTaskSchedulerType	StartFWRootTask.cpp	/^int StartFWRootTask::setTaskSchedulerType()$/;"	f	class:rc::StartFWRootTask
+setTotalActualUseRes	FWInstance.cpp	/^void FWInstance::setTotalActualUseRes(const Resource &res)$/;"	f	class:rc::FWInstance
+setTotalApplyRes	FWInstance.cpp	/^void FWInstance::setTotalApplyRes(const Resource &res)$/;"	f	class:rc::FWInstance
+setTotalNCRes	NCLoadBalance.cpp	/^void NCLoadBalance::setTotalNCRes(const Resource &totalRes)$/;"	f	class:rc::NCLoadBalance
+shortOpt	main.cpp	/^const char * const shortOpt = "hf:";$/;"	v
+sig_internal	main.cpp	/^void sig_internal(int sigNo)$/;"	f
+taskReportFromFWM	InfoFromFWMToRC.cpp	/^int InfoFromFWMToRC::taskReportFromFWM($/;"	f	class:rc::InfoFromFWMToRC
+taskReportFromNC	InfoFromNCToRC.cpp	/^int InfoFromNCToRC::taskReportFromNC($/;"	f	class:rc::InfoFromNCToRC
+updateFWIInfo	NCHeartBeatTask.cpp	/^int NCHeartBeatTask::updateFWIInfo()$/;"	f	class:rc::NCHeartBeatTask
+updateNCInfo	NCHeartBeatTask.cpp	/^int NCHeartBeatTask::updateNCInfo()$/;"	f	class:rc::NCHeartBeatTask
+~ALAgent	ALAgent.cpp	/^ALAgent::~ALAgent()$/;"	f	class:rc::ALAgent
+~ConfigManager	ConfigManager.cpp	/^ConfigManager::~ConfigManager()$/;"	f	class:rc::ConfigManager
+~FWIManager	FWIManager.cpp	/^FWIManager::~FWIManager()$/;"	f	class:rc::FWIManager
+~FWInstance	FWInstance.cpp	/^FWInstance::~FWInstance()$/;"	f	class:rc::FWInstance
+~FWMAgent	FWMAgent.cpp	/^FWMAgent::~FWMAgent()$/;"	f	class:rc::FWMAgent
+~FWMHeartBeatTimer	FWMHeartBeatTimer.cpp	/^FWMHeartBeatTimer::~FWMHeartBeatTimer()$/;"	f	class:rc::FWMHeartBeatTimer
+~InfoFromFWMToRC	InfoFromFWMToRC.cpp	/^InfoFromFWMToRC::~InfoFromFWMToRC()$/;"	f	class:rc::InfoFromFWMToRC
+~InfoFromNCToRC	InfoFromNCToRC.cpp	/^InfoFromNCToRC::~InfoFromNCToRC()$/;"	f	class:rc::InfoFromNCToRC
+~InfoSendToFWM	InfoSendToFWM.cpp	/^InfoSendToFWM::~InfoSendToFWM()$/;"	f	class:rc::InfoSendToFWM
+~InfoSendToNC	InfoSendToNC.cpp	/^InfoSendToNC::~InfoSendToNC()$/;"	f	class:rc::InfoSendToNC
+~NCAgent	NCAgent.cpp	/^NCAgent::~NCAgent()$/;"	f	class:rc::NCAgent
+~NCHeartBeatTask	NCHeartBeatTask.cpp	/^NCHeartBeatTask::~NCHeartBeatTask()$/;"	f	class:rc::NCHeartBeatTask
+~NCHeartBeatTimer	NCHeartBeatTimer.cpp	/^NCHeartBeatTimer::~NCHeartBeatTimer()$/;"	f	class:rc::NCHeartBeatTimer
+~NCLoadBalance	NCLoadBalance.cpp	/^NCLoadBalance::~NCLoadBalance()$/;"	f	class:rc::NCLoadBalance
+~NCRegTask	NCRegTask.cpp	/^NCRegTask::~NCRegTask()$/;"	f	class:rc::NCRegTask
+~ResourceManager	ResourceManager.cpp	/^ResourceManager::~ResourceManager()$/;"	f	class:rc::ResourceManager
+~ResourceScheduler	ResourceScheduler.cpp	/^ResourceScheduler::~ResourceScheduler()$/;"	f	class:rc::ResourceScheduler
+~RunControl	RunControl.cpp	/^RunControl::~RunControl()$/;"	f	class:rc::RunControl
+~SASAgent	SASAgent.cpp	/^SASAgent::~SASAgent()$/;"	f	class:rc::SASAgent
+~StartFWRootTask	StartFWRootTask.cpp	/^StartFWRootTask::~StartFWRootTask()$/;"	f	class:rc::StartFWRootTask
+~StrategyManager	StrategyManager.cpp	/^StrategyManager::~StrategyManager()$/;"	f	class:rc::StrategyManager

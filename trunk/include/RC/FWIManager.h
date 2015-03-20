@@ -24,15 +24,14 @@ public:
     void recycleAll();
 
     FWInstance* createFWInstance();
+    uint32_t generateInstanceID();
+    uint32_t generateModuleID();
 
 private:
     FWIManager();
     ~FWIManager();
 
     typedef map<uint32_t, FWInstance*> FWIMap;
-
-    uint32_t generateInstanceID();
-    uint32_t generateModuleID();
 
     FWIMap m_map;
     uint32_t m_FWIID;

@@ -3,6 +3,7 @@
 #include "NCRegTask.h"
 #include "ConfigManager.h"
 #include "NCHeartBeatTask.h"
+#include "StartFWRootTask.h"
 
 #include "common/log/log.h"
 #include "common/comm/AgentManager.h"
@@ -41,8 +42,14 @@ int InfoFromNCToRC::handleNCReq(InReq &req)
     {
         case MSG_NC_RC_REGISTER:
         {
+            INFO_LOG("InfoFromNCToRC::handleNCReq: MSG_NC_RC_REGISTER");
             string data(req.ioBuf, req.m_msgHeader.length);
             ret = doRegister(taskID, data);
+            sendAckToNC(
+                    MSG_NC_RC_REGISTER_ACK,
+                    ret,
+                    req.m_msgHeader.para1,
+                    req.m_msgHeader.para2);
             break;
         }
         case MSG_NC_RC_SEND_HEARTBEAT_AND_MONITOR_INFOMATION:
@@ -75,7 +82,23 @@ int InfoFromNCToRC::handleNCReq(InReq &req)
             pTask->goNext();
             break;            
         }
-
+        case MSG_RC_NC_START_FRAMEWORK_ROOT_ACK:
+        {
+            INFO_LOG("InfoFromNCToRC start root ack!");
+            StartFWRootTask *pStartRootTask = 
+                dynamic_cast<StartFWRootTask*>((TaskManager::getInstance())
+                    ->get(taskID));
+            if(pStartRootTask == NULL)
+            {
+                ERROR_LOG(
+                        "InfoFromNCToRC::handleNCReq: StartFWRootTask not found!");
+                return FAILED;
+            }
+            string data(req.ioBuf,req.m_msgHeader.length);
+            pStartRootTask->setDataString(data);
+            pStartRootTask->goNext();
+            break;            
+        }
         default:
             ERROR_LOG(
                     "InfoFromNCToRC::handleNCReq: \
@@ -118,6 +141,7 @@ void InfoFromNCToRC::sendAckToNC(
         return;
     }
     pAgent->sendPackage(msg);
+    INFO_LOG("send ack message to NC: cmd is %d", cmd);
 }
 
 uint64_t InfoFromNCToRC::mergeID(uint32_t low, uint32_t high) const

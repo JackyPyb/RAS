@@ -2,7 +2,7 @@
 #define _RC_NCLOADBALANCE_H_
 
 #include <string>
-#include <list>
+#include <set>
 #include <stdint.h>
 
 #include "common/comm/TaskManager.h"
@@ -11,7 +11,7 @@
 #include "Resource.h"
 
 using std::string;
-using std::list;
+using std::set;
 
 namespace rc
 {
@@ -68,12 +68,12 @@ public:
     }
 
     void registerOn(const uint32_t);
-    int checkForAddTask(Task*);
+//    int checkForAddTask(Task*);
     int sendTaskToNC(Task*);
-    void setFWInstance(const list<uint32_t>&);
+    void setFWInstance(const set<uint32_t>&);
     bool addFWInstance(const uint32_t);
     bool delFWInstance(const uint32_t);
-    list<uint32_t> getFWInstance() const;
+    set<uint32_t> getFWInstance() const;
 
     void setTotalNCRes(const Resource&);
     Resource getTotalNCRes() const;
@@ -87,14 +87,14 @@ public:
     Resource getActualRemainRes() const;
 
 private:
-    typedef list<uint32_t>::iterator ListIter;
+    typedef set<uint32_t>::iterator SetIter;
 
     bool m_isOnline;
     string m_NCIP;
     uint32_t m_NCPort;
     uint32_t m_NCAgentID;
     bool m_needSort;
-    list<uint32_t> m_FWInstanceList;
+    set<uint32_t> m_FWInstanceSet;
     InfoSendToNC *m_pInfoSendToNC;
 
     Resource m_totalNCRes;

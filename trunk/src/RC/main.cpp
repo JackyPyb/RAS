@@ -38,7 +38,8 @@ int main(int argc, char *argv[])
 {
     if(argc != 3)
     {
-        std::cout << "Usage: " << argv[0] << " -f config_filename" << std::endl;
+        std::cout << "Usage: " << argv[0] 
+            << " -f config_filename" << std::endl;
         exit(FAILED);
     }
 
@@ -55,7 +56,8 @@ int main(int argc, char *argv[])
         switch(ch)
         {
             case 'h':
-                std::cout << "Usage: " << argv[0] << " -f config_filename" << std::endl;
+                std::cout << "Usage: " << argv[0] 
+                    << " -f config_filename" << std::endl;
                 return SUCCESSFUL;
             case 'f':
                 pConfigFileName = optarg;

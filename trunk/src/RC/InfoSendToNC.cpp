@@ -1,8 +1,14 @@
 #include "InfoSendToNC.h"
 #include "NCAgent.h"
+#include "protocol/RASCmdCode.h"
+#include "protocol/TaskType.h"
+#include "StartFWRootTask.h"
+#include "ConfigManager.h"
+#include "protocol/RcNcProtocol.pb.h"
+#include "FWIManager.h"
+#include "FWInstance.h"
 
 #include "common/comm/AgentManager.h"
-#include "protocol/RASCmdCode.h"
 #include "common/log/log.h"
 
 namespace rc
@@ -27,7 +33,52 @@ int InfoSendToNC::sendTaskToNC(Task *pTask)
     uint32_t taskType = pTask->getTaskType();
     switch(taskType)
     {
+        case START_FW_ROOT_TASK:
+        {
+            StartFWRootTask *pStartRootTask = 
+                dynamic_cast<StartFWRootTask*>(pTask);
 
+            RcNcProto::StartFrameworkRoot startRootInfo;
+            
+            RcNcProto::FrameworkInstanceInfo *fwInstance = 
+                startRootInfo.mutable_framework_instance_info();
+            fwInstance->set_framework_id( 
+                (pStartRootTask->m_startRootModuleInfo).framework_id());
+            fwInstance->set_framework_instance_id( 
+                pStartRootTask->getFWInstanceID());
+            startRootInfo.set_self_module_id(pStartRootTask->getRootModuleID());
+            RcNcProto::DockerImageInfo *dockerInfo = 
+                startRootInfo.mutable_docker_image_info();
+            dockerInfo->set_tag(
+                    (pStartRootTask->m_startRootModuleInfo).image_lable());
+            dockerInfo->set_locate_file(
+                    (pStartRootTask->m_startRootModuleInfo).location_file_path());
+            dockerInfo->set_module_name(
+                    (pStartRootTask->m_startRootModuleInfo).module_name());
+            RcNcProto::ResourceInfo *resInfo = 
+                startRootInfo.mutable_require_resource();
+
+            FWInstance * pFWInstance = (FWIManager::getInstance())->
+                get(pStartRootTask->getFWInstanceID());
+            resInfo->set_cpu_num(pFWInstance->getRootLogicCPUNum());
+            resInfo->set_cpu_mem_size(pFWInstance->getRootMemSize());
+            startRootInfo.set_listen_num(
+                    (pStartRootTask->m_startRootModuleInfo).listen_num());
+            RcNcProto::NetAddress *netAddress = startRootInfo.mutable_rc_address();
+            netAddress->set_ip(pStartRootTask->getNCIP());
+            SocketAddress rcFWMaddress = (ConfigManager::getInstance()
+                    ->getFWMListenAddr());
+            netAddress->set_port(rcFWMaddress.getPort());
+
+            startRootInfo.SerializeToString(&m_data);
+            setMsgHeader(MSG_RC_NC_START_FRAMEWORK_ROOT,
+                    m_data.length(),
+                    pStartRootTask->getID());
+            break;            
+        }
+        default:
+            ERROR_LOG("UNKNOWN TASKTYPE");
+            break;
     }
 
     NCAgent *pAgent = dynamic_cast<NCAgent*>(

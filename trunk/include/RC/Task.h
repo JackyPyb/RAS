@@ -41,7 +41,7 @@ public:
     }
 
     virtual void setNCIP(const string&){}
-    virtual void getNC(vector<string>&){}
+    virtual string getNCIP() const{}
     virtual int goNext()
     {
         return 0;
