@@ -4,6 +4,10 @@
 #include "common/sys/Singleton.h"
 #include "common/comm/SocketAddress.h"
 
+#include <string>
+
+using std::string;
+
 namespace rc
 {
 
@@ -23,6 +27,7 @@ public:
     unsigned int getFWMRootHeartBeatTimeOut() const;
     unsigned int getFWMRootHeartBeatRetryNum() const;
     unsigned int getMinNCNum() const;
+    string getLocalIP() const;
 
 private:
     ConfigManager();
@@ -33,6 +38,7 @@ private:
     SocketAddress m_SASListenAddr;
     SocketAddress m_FWMListenAddr;
     SocketAddress m_ALListenAddr;
+    string m_localIP;
     unsigned int m_NCHeartBeatTimeOut;
     unsigned int m_NCHeartBeatRetryNum;
     unsigned int m_FWMRootHeartBeatTimeOut;

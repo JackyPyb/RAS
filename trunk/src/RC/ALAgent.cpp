@@ -1,6 +1,7 @@
 #include "ALAgent.h"
 #include "StartFWRootTask.h"
 #include "protocol/RASCmdCode.h"
+#include "head.h"
 
 #include "common/comm/TaskManager.h"
 #include "common/log/log.h"
@@ -12,7 +13,9 @@ ALAgent::ALAgent(const TCPSocket &sock,
         const SocketAddress &oppoAddr):
     TCPAgent(sock, oppoAddr)
 {
-
+    #ifdef DEBUG
+    INFO_LOG("ALAgent constructed");
+    #endif
 }
 
 ALAgent::~ALAgent()
@@ -28,6 +31,10 @@ void ALAgent::readBack(InReq &req)
     {
         case MSG_AL_RC_START_ROOT_MODULE:
         {
+            #ifdef DEBUG
+            INFO_LOG("ALAgent::readBack: MSG_AL_RC_START_ROOT_MODULE");
+            #endif
+
             string data(req.ioBuf, req.m_msgHeader.length);
             StartFWRootTask *pTask = 
                 (TaskManager::getInstance())->create<StartFWRootTask>();
@@ -37,6 +44,8 @@ void ALAgent::readBack(InReq &req)
             pTask->goNext();
             break;            
         }
+        default:
+            ERROR_LOG("ALAgent::readBack: invalid cmd");
     }
 }
 

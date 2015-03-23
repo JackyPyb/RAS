@@ -1,5 +1,6 @@
 #include "ConfigManager.h"
 #include "RunControl.h"
+#include "head.h"
 
 #include "common/comm/TaskManager.h"
 #include "common/log/log.h"
@@ -14,7 +15,7 @@
 
 using namespace rc;
 
-const char * const shortOpt = "hf:";
+char * const shortOpt = "hf:";
 TimerManager *g_pTimerManager = NULL;
 Epoll *g_pEpoll = NULL;
 
@@ -76,6 +77,31 @@ int main(int argc, char *argv[])
         ERROR_LOG("RC : Config init ERROR");
         return FAILED;
     }
+
+    #ifdef DEBUG
+    INFO_LOG("Epoll Max Fd is %d", 
+            (ConfigManager::getInstance())->getEpollMaxFd());
+    INFO_LOG("NC listen port is %d",
+            ((ConfigManager::getInstance())->getNCListenAddr()).getPort());
+    INFO_LOG("SAS listen port is %d",
+            ((ConfigManager::getInstance())->getSASListenAddr()).getPort());
+    INFO_LOG("FWM listen port is %d",
+            ((ConfigManager::getInstance())->getFWMListenAddr()).getPort());
+    INFO_LOG("AL listen port is %d",
+            ((ConfigManager::getInstance())->getALListenAddr()).getPort());
+    INFO_LOG("NC heart beat time out is %d",
+            (ConfigManager::getInstance())->getNCHeartBeatTimeOut());
+    INFO_LOG("NC heart beat retry num is %d",
+            (ConfigManager::getInstance())->getNCHeartBeatRetryNum());
+    INFO_LOG("FWM heart beat time out is %d",
+            (ConfigManager::getInstance())->getFWMRootHeartBeatTimeOut());
+    INFO_LOG("FWM heart beat retry num is %d",
+            (ConfigManager::getInstance())->getFWMRootHeartBeatRetryNum());
+    INFO_LOG("Min NC num is %d",
+            (ConfigManager::getInstance())->getMinNCNum());
+    INFO_LOG("Local IP is %s",
+            (ConfigManager::getInstance())->getLocalIP().c_str());
+    #endif
 
     g_pTimerManager = new TimerManager();
     if(g_pTimerManager == NULL)

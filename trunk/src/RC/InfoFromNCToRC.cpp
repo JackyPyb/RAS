@@ -4,6 +4,7 @@
 #include "ConfigManager.h"
 #include "NCHeartBeatTask.h"
 #include "StartFWRootTask.h"
+#include "head.h"
 
 #include "common/log/log.h"
 #include "common/comm/AgentManager.h"
@@ -42,7 +43,10 @@ int InfoFromNCToRC::handleNCReq(InReq &req)
     {
         case MSG_NC_RC_REGISTER:
         {
+            #ifdef DEBUG
             INFO_LOG("InfoFromNCToRC::handleNCReq: MSG_NC_RC_REGISTER");
+            #endif
+
             string data(req.ioBuf, req.m_msgHeader.length);
             ret = doRegister(taskID, data);
             sendAckToNC(
@@ -54,6 +58,11 @@ int InfoFromNCToRC::handleNCReq(InReq &req)
         }
         case MSG_NC_RC_SEND_HEARTBEAT_AND_MONITOR_INFOMATION:
         {
+            #ifdef DEBUG
+            INFO_LOG("InfoFromNCToRC::handleNCReq: \
+                    MSG_NC_RC_SEND_HEARTBEAT_AND_MONITOR_INFOMATION");
+            #endif
+
             if(m_pNCHeartBeatTimer == NULL)
             {
                 m_pNCHeartBeatTimer = new NCHeartBeatTimer(
@@ -84,7 +93,9 @@ int InfoFromNCToRC::handleNCReq(InReq &req)
         }
         case MSG_RC_NC_START_FRAMEWORK_ROOT_ACK:
         {
+#ifdef DEBUG
             INFO_LOG("InfoFromNCToRC start root ack!");
+#endif
             StartFWRootTask *pStartRootTask = 
                 dynamic_cast<StartFWRootTask*>((TaskManager::getInstance())
                     ->get(taskID));
@@ -141,7 +152,10 @@ void InfoFromNCToRC::sendAckToNC(
         return;
     }
     pAgent->sendPackage(msg);
+    
+    #ifdef DEBUG
     INFO_LOG("send ack message to NC: cmd is %d", cmd);
+    #endif
 }
 
 uint64_t InfoFromNCToRC::mergeID(uint32_t low, uint32_t high) const

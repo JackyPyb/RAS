@@ -7,6 +7,7 @@
 #include "ConfigManager.h"
 #include "protocol/RASCmdCode.h"
 #include "protocol/TaskType.h"
+#include "head.h"
 
 #include "common/log/log.h"
 #include "common/comm/TaskManager.h"
@@ -18,7 +19,10 @@ namespace rc
 
 NCRegTask::NCRegTask()
 {
+    #ifdef DEBUG
     INFO_LOG("NCRegTask constructed");
+    #endif
+
     setTaskState(NCREGTASK_DOPARSE);
     setDataString("");
     setTaskType(NC_REG_TASK);
@@ -36,7 +40,10 @@ int NCRegTask::goNext()
     {
         case NCREGTASK_DOPARSE:
         {
+            #ifdef DEBUG
             INFO_LOG("NCREGTASK_DOPARSE");
+            #endif
+
             ret = doParse();
             setTaskState(NCREGTASK_REGISTER);
             ret = goNext();
@@ -44,7 +51,10 @@ int NCRegTask::goNext()
         }
         case NCREGTASK_REGISTER:
         {
+            #ifdef DEBUG
             INFO_LOG("NCREGTASK_REGISTER");
+            #endif
+
             ret = (ResourceManager::getInstance())->registerNC(
                     m_NCIP, m_NCAgentID, getID());
             sendAckToNC(ret);
@@ -62,7 +72,10 @@ int NCRegTask::goNext()
         }
         case NCREGTASK_CHECK_SERVICE:
         {
+            #ifdef DEBUG
             INFO_LOG("NCREGTASK_CHECK_SERVICE");
+            #endif
+
             if((ResourceManager::getInstance())->checkServiceIsOK())
             {
                 setTaskState(NCREGTASK_CREATE_ALFWMLISTEN);
@@ -77,7 +90,10 @@ int NCRegTask::goNext()
         }
         case NCREGTASK_CREATE_ALFWMLISTEN:
         {
+            #ifdef DEBUG
             INFO_LOG("NCREGTASK_CREATE_ALFWMLISTEN");
+            #endif
+
             if((ResourceManager::getInstance())->isALFWMListenCreated())
             {
                 setTaskState(NCREGTASK_FINISH_TASK);
@@ -109,7 +125,10 @@ int NCRegTask::goNext()
         }
         case NCREGTASK_FINISH_TASK:
         {
+            #ifdef DEBUG
             INFO_LOG("NCRegTask finished!");
+            #endif
+
             clearTaskPara();
             (TaskManager::getInstance())->recycle(getID());
             break;
@@ -132,8 +151,11 @@ int NCRegTask::doParse()
     {
         setNCIP(ncReg.nc_ip());
         setPort(ncReg.nc_port());
+
+        #ifdef DEBUG
         INFO_LOG("NC register ip is %s, port is %d", 
                 ncReg.nc_ip().c_str(), ncReg.nc_port());
+        #endif
 
         Resource res;
 

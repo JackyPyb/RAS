@@ -7,6 +7,7 @@
 #include "protocol/RcNcProtocol.pb.h"
 #include "FWIManager.h"
 #include "FWInstance.h"
+#include "head.h"
 
 #include "common/comm/AgentManager.h"
 #include "common/log/log.h"
@@ -65,10 +66,24 @@ int InfoSendToNC::sendTaskToNC(Task *pTask)
             startRootInfo.set_listen_num(
                     (pStartRootTask->m_startRootModuleInfo).listen_num());
             RcNcProto::NetAddress *netAddress = startRootInfo.mutable_rc_address();
-            netAddress->set_ip(pStartRootTask->getNCIP());
+            netAddress->set_ip((ConfigManager::getInstance())
+                    ->getLocalIP());
             SocketAddress rcFWMaddress = (ConfigManager::getInstance()
                     ->getFWMListenAddr());
             netAddress->set_port(rcFWMaddress.getPort());
+
+#ifdef DEBUG
+            INFO_LOG("InfoSendToNC::sendTaskToNC: START_FW_ROOT_TASK");
+            INFO_LOG("FW id %d", (pStartRootTask->m_startRootModuleInfo).framework_id());
+            INFO_LOG("FW instance id %d", pStartRootTask->getFWInstanceID());
+            INFO_LOG("Self module id %d", pStartRootTask->getRootModuleID());
+            INFO_LOG("Module name %s", (pStartRootTask->m_startRootModuleInfo).module_name().c_str());
+            INFO_LOG("logicCPUNum %f", pFWInstance->getRootLogicCPUNum());
+            INFO_LOG("cpuMemSize %d", pFWInstance->getRootMemSize());
+            INFO_LOG("listen num %d", (pStartRootTask->m_startRootModuleInfo).listen_num());
+            INFO_LOG("RC IP %s", ConfigManager::getInstance()->getLocalIP().c_str());
+            INFO_LOG("RC port %d", ConfigManager::getInstance()->getFWMListenAddr().getPort());
+#endif
 
             startRootInfo.SerializeToString(&m_data);
             setMsgHeader(MSG_RC_NC_START_FRAMEWORK_ROOT,

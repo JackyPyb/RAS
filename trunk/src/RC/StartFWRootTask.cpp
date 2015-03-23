@@ -7,6 +7,7 @@
 #include "ALAgent.h"
 #include "protocol/RcNcProtocol.pb.h"
 #include "protocol/RASCmdCode.h"
+#include "head.h"
 
 #include "common/log/log.h"
 #include "common/comm/Error.h"
@@ -22,6 +23,10 @@ StartFWRootTask::StartFWRootTask():
     m_NCIP(""),
     m_fwInstanceID(0)
 {
+    #ifdef DEBUG
+    INFO_LOG("StartFWRootTask constructed");
+    #endif
+
     setTaskState(STARTFWROOTTASK_DOPARSE);
     setDataString("");
     setTaskType(START_FW_ROOT_TASK);
@@ -39,59 +44,47 @@ int StartFWRootTask::goNext()
     {
         case STARTFWROOTTASK_DOPARSE:
         {
+#ifdef DEBUG
+            INFO_LOG("STARTFWROOTTASK_DOPARSE");
+#endif
+
             doParse();
             goNext();
             break;
         }
         case STARTFWROOTTASK_SET_TASK_SCHEDULER_TYPE:
         {
+#ifdef DEBUG
+            INFO_LOG("STARTFWROOTTASK_SET_TASK_SCHEDULER_TYPE");
+#endif
             setTaskSchedulerType();
             goNext();
             break;
         }
         case STARTFWROOTTASK_CREATE_FWINSTANCE:
         {
-            FWInstance *pFWInstance = (FWIManager::getInstance())->createFWInstance();
+            FWInstance *pFWInstance = 
+                (FWIManager::getInstance())->createFWInstance();
             m_fwInstanceID = pFWInstance->getFWInstanceID();
+
+#ifdef DEBUG
+            INFO_LOG("STARTFWROOTTASK_CREATE_FWINSTANCE");
+            INFO_LOG("Created FW instance id is %d", m_fwInstanceID);
+#endif
             goNext();
             break;
         }
         case STARTFWROOTTASK_SET_FWINSTANCE_BASIC_INFO:
         {
-            FWInstance *pFWInstance = (FWIManager::getInstance())->get(m_fwInstanceID);
-            uint32_t frameworkID = m_startRootModuleInfo.framework_id();
-            pFWInstance->setFrameworkID(frameworkID);
-            AlProto::ResourceInfo rootRes = m_startRootModuleInfo.request_resource_size();
-            double cpuNum = rootRes.cpu_num();
-            uint32_t memSize = rootRes.cpu_mem_size();
-            pFWInstance->setRootLogicCPUNum(cpuNum);
-            pFWInstance->setRootMemSize(memSize);
-
-            multimap<string, uint32_t> gpuMap;
-            for(int i = 0; i < rootRes.gpu_resource_info_size(); i++)
-            {
-                AlProto::GpuResourceInfo gpuRes = 
-                    rootRes.gpu_resource_info(i);
-                string name = gpuRes.gpu_name();
-                gpuMap.insert(std::pair<string, uint32_t>(
-                            name, gpuRes.gpu_mem_size()));
-            }
-            pFWInstance->setRootGPUInfo(gpuMap);
-
-            multimap<string, Resource> resMap;
-            Resource res;
-            res.logicCPUNum = cpuNum;
-            res.cpuMemSize = memSize;
-           // res.GPUInfo = gpuMap;
-
-            string ip = m_startRootModuleInfo.nc_ip();
-            resMap.insert(std::pair<string, Resource>(ip, res));
-            setResourceMap(resMap);
+            setBasicInfo();
             goNext();
             break;
         }
         case STARTFWROOTTASK_SCHEDULER:
         {
+#ifdef DEBUG
+            INFO_LOG("STARTFWROOTTASK_SCHEDULER");
+#endif
             (ResourceScheduler::getInstance())->scheduleTask(getID());
             setTaskState(STARTFWROOTTASK_WAIT_NC_ACK);
             break;
@@ -101,6 +94,10 @@ int StartFWRootTask::goNext()
             RcNcProto::RespondStartFrameworkRoot startRootAck;
             startRootAck.ParseFromString(getDataString());
             uint32_t processID = startRootAck.root_pid();
+#ifdef DEBUG
+            INFO_LOG("STARTFWROOTTASK_WAIT_NC_ACK");
+            INFO_LOG("processID is %d", processID);
+#endif
             FWInstance *pFWInstance = 
                 (FWIManager::getInstance())->get(getFWInstanceID());
             pFWInstance->setModuleIPProcess(
@@ -161,6 +158,49 @@ int StartFWRootTask::setTaskSchedulerType()
     return SUCCESSFUL;    
 }
 
+void StartFWRootTask::setBasicInfo()
+{
+    FWInstance *pFWInstance = 
+        (FWIManager::getInstance())->get(m_fwInstanceID);
+    uint32_t frameworkID = m_startRootModuleInfo.framework_id();
+    pFWInstance->setFrameworkID(frameworkID);
+    AlProto::ResourceInfo rootRes = 
+        m_startRootModuleInfo.request_resource_size();
+    double cpuNum = rootRes.cpu_num();
+    uint32_t memSize = rootRes.cpu_mem_size();
+    pFWInstance->setRootLogicCPUNum(cpuNum);
+    pFWInstance->setRootMemSize(memSize);
+
+#ifdef DEBUG
+    INFO_LOG("STARTFWROOTTASK_SET_FWINSTANCE_BASIC_INFO");
+    INFO_LOG("FW ID is %d", pFWInstance->getFWInstanceID());
+    INFO_LOG("Root logicCPUNum is %f, cpuMemSize is %d",
+            pFWInstance->getRootLogicCPUNum(),
+            pFWInstance->getRootMemSize());
+#endif
+
+    multimap<string, uint32_t> gpuMap;
+    for(int i = 0; i < rootRes.gpu_resource_info_size(); i++)
+    {
+        AlProto::GpuResourceInfo gpuRes = 
+            rootRes.gpu_resource_info(i);
+        string name = gpuRes.gpu_name();
+        gpuMap.insert(std::pair<string, uint32_t>(
+                    name, gpuRes.gpu_mem_size()));
+    }
+    pFWInstance->setRootGPUInfo(gpuMap);
+
+    multimap<string, Resource> resMap;
+    Resource res;
+    res.logicCPUNum = cpuNum;
+    res.cpuMemSize = memSize;
+    // res.GPUInfo = gpuMap;
+
+    string ip = m_startRootModuleInfo.nc_ip();
+    resMap.insert(std::pair<string, Resource>(ip, res));
+    setResourceMap(resMap);
+}
+
 int StartFWRootTask::sendResultToAL(uint32_t ret)
 {
     MsgHeader msg;
@@ -194,6 +234,10 @@ int StartFWRootTask::sendResultToAL(uint32_t ret)
         return FAILED;
     }
 
+#ifdef DEBUG
+    INFO_LOG("StartFWRootTask::sendResultToAL: \
+            MSG_AL_RC_START_ROOT_MODULE_ACK");
+#endif
     return pAgent->sendPackage(msg, data);
 }
 

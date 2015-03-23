@@ -1,6 +1,7 @@
 #include "ResourceManager.h"
 #include "ConfigManager.h"
 #include "NCRegTask.h"
+#include "head.h"
 
 #include "protocol/RASErrorCode.h"
 #include "common/comm/AgentManager.h"
@@ -230,8 +231,29 @@ string ResourceManager::getSuitableNCByMem(const Resource &res) const
             continue;
         }
     }
+    
+#ifdef DEBUG
+    INFO_LOG("ResourceManager::getSuitableNCByMem");
+    printMemSet();
+    INFO_LOG("Finally choose %s", suitableIP.c_str());
+
+#endif
 
     return suitableIP;
+}
+
+void ResourceManager::printMemSet() const
+{
+    MemSetIter debugIter = m_memFirstGPUNotConsider.begin();
+    for(; debugIter != m_memFirstGPUNotConsider.end(); debugIter++)
+    {
+        NCInfo debugNCInfo = *debugIter;
+        NCLoadBalance *pDebugNCLB = debugNCInfo.getNCLB();
+        Resource debugNCRes = pDebugNCLB->getNotApplyRes();
+        string debugIP = debugNCInfo.getIP();
+        INFO_LOG("IP %s, logicCPUNum is %f, cpuMemSize is %d",
+                debugIP.c_str(), debugNCRes.logicCPUNum, debugNCRes.cpuMemSize);
+    }
 }
 
 string ResourceManager::getSuitableNCByCPU(const Resource &res) const
@@ -260,7 +282,28 @@ string ResourceManager::getSuitableNCByCPU(const Resource &res) const
         }
     }
 
+#ifdef DEBUG
+    INFO_LOG("ResourceManager::getSuitableNCByCPU");
+    printCPUSet();
+    INFO_LOG("Finally choose %s", suitableIP.c_str());
+#endif
+
     return suitableIP;
+}
+
+void ResourceManager::printCPUSet() const
+{
+    CPUSetIter debugIter = m_CPUFirstGPUNotConsider.begin();
+    for(; debugIter != m_CPUFirstGPUNotConsider.end(); debugIter++)
+    {
+        NCInfo debugNCInfo = *debugIter;
+        NCLoadBalance *pDebugNCLB = debugNCInfo.getNCLB();
+        Resource debugNCRes = pDebugNCLB->getNotApplyRes();
+        INFO_LOG("IP %s, logicCPUNum is %f, cpuMemSize is %d",
+                debugNCInfo.getIP().c_str(),
+                debugNCRes.logicCPUNum,
+                debugNCRes.cpuMemSize);
+    }
 }
 
 string ResourceManager::getSuitableNCFromVec(const vector<string> &ips) const
@@ -296,7 +339,9 @@ bool ResourceManager::checkServiceIsOK() const
 
 void ResourceManager::setALFWMListenCreated(bool isListened)
 {
+    #ifdef DEBUG
     INFO_LOG("ResourceManager::setALFWMListenCreated %d", isListened);
+    #endif
     m_isALFWMListenCreated = isListened;
 }
 

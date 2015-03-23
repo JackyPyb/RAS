@@ -6,6 +6,7 @@
 #include "protocol/TaskType.h"
 #include "FWInstance.h"
 #include "FWIManager.h"
+#include "head.h"
 
 #include "common/comm/TaskManager.h"
 #include "common/log/log.h"
@@ -24,7 +25,7 @@ NCHeartBeatTask::NCHeartBeatTask():
 
 NCHeartBeatTask::~NCHeartBeatTask()
 {
-
+    m_NCIP.clear();
 }
 
 int NCHeartBeatTask::goNext()
@@ -34,6 +35,10 @@ int NCHeartBeatTask::goNext()
     {
         case NCHEARTBEATTASK_UPDATE_NCINFO:
         {
+            #ifdef DEBUG
+            INFO_LOG("NCHEARTBEATTASK_UPDATE_NCINFO");
+            #endif
+
             ret = updateNCInfo();
             setTaskState(NCHEARTBEATTASK_UPDATE_FWIINFO);
             goNext();
@@ -41,6 +46,10 @@ int NCHeartBeatTask::goNext()
         }
         case NCHEARTBEATTASK_UPDATE_FWIINFO:
         {
+            #ifdef DEBUG
+            INFO_LOG("NCHEARTBEATTASK_UPDATE_FWIINFO");
+            #endif
+
             ret = updateFWIInfo();
             setTaskState(NCHEARTBEATTASK_FINISH_TASK);
             goNext();
@@ -48,7 +57,10 @@ int NCHeartBeatTask::goNext()
         }
         case NCHEARTBEATTASK_FINISH_TASK:
         {
+            #ifdef DEBUG
             INFO_LOG("Update NC info OK!");
+            #endif
+
             clearTaskPara();
             (TaskManager::getInstance())->recycle(getID());
             break;
@@ -96,6 +108,15 @@ int NCHeartBeatTask::updateNCInfo()
     }
     
     pNCLB->setActualUseRes(actualUseRes);
+    
+    #ifdef DEBUG
+    Resource debugUsedResInfo = pNCLB->getActualUseRes();
+    INFO_LOG("NC %s actual use res is \n \
+            logicCPUNum is %f, cpuMemSize is %d", 
+            getNCIP().c_str(),
+            debugUsedResInfo.logicCPUNum,
+            debugUsedResInfo.cpuMemSize);
+    #endif
 
     RcNcProto::ResourceInfo remainResInfo = 
         monitorInfo.rest_machine_resource_info();
@@ -112,6 +133,15 @@ int NCHeartBeatTask::updateNCInfo()
 
     pNCLB->setActualRemainRes(actualRemainRes);
 
+    #ifdef DEBUG
+    Resource debugRemainRes = pNCLB->getActualRemainRes();
+    INFO_LOG("NC %s actual remain res is \n \
+            logicCPUNum is %f, cpuMemSize is %d",
+            m_NCIP.c_str(),
+            debugRemainRes.logicCPUNum,
+            debugRemainRes.cpuMemSize);
+    #endif
+
     return SUCCESSFUL;
 }
 
@@ -125,6 +155,12 @@ int NCHeartBeatTask::updateFWIInfo()
                 "NCHeartBeatTask::updateFWIInfo: parse protobuffer error!");
         return FAILED;
     }
+
+    #ifdef DEBUG
+    INFO_LOG("NC %s fw num is %d",
+            m_NCIP.c_str(),
+            monitorInfo.container_usage_resource_info_size());
+    #endif
 
     for(int i = 0; i < monitorInfo.container_usage_resource_info_size(); i++)
     {
@@ -151,13 +187,43 @@ int NCHeartBeatTask::updateFWIInfo()
                     "NCHeartBeatTask::updateFWIInfo: FWInstance not found");
             return FAILED;
         }
-
+        
         Resource oldRes = pFWInstance->getNCActualUseRes(m_NCIP);
         pFWInstance->setNCActualUseRes(m_NCIP, res);
         Resource totalUsedRes = pFWInstance->getTotalActualUseRes();
+
+        #ifdef DEBUG
+        INFO_LOG("NC %s, FW ID %d, actual use res is \n \
+                logicCPUNum is %f, cpuMemSize is %d",
+                m_NCIP.c_str(),
+                fwID,
+                res.logicCPUNum,
+                res.cpuMemSize);
+        INFO_LOG("NC %s , FW ID %d, old actual use res is \n \
+                logicCPUNum is %f, cpuMemSize is %d",
+                m_NCIP.c_str(),
+                fwID,
+                oldRes.logicCPUNum,
+                oldRes.cpuMemSize);
+        INFO_LOG("FW ID %d ---OLD--- total actual res is \n \
+                logicCPUNum is %f, cpuMemSize is %d",
+                fwID,
+                totalUsedRes.logicCPUNum,
+                totalUsedRes.cpuMemSize);
+        #endif
+
         totalUsedRes -= oldRes;
         totalUsedRes += res;
         pFWInstance->setTotalActualUseRes(totalUsedRes);
+
+        #ifdef DEBUG
+        Resource newTotalUsedRes = pFWInstance->getTotalActualUseRes();
+        INFO_LOG("FW ID %d ---NEW--- total actual res is \n \
+                logicCPUNum is %f, cpuMemSize is %d",
+                fwID,
+                newTotalUsedRes.logicCPUNum,
+                newTotalUsedRes.cpuMemSize);
+        #endif
     }
 
     return SUCCESSFUL;

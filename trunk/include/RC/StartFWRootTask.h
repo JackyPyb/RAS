@@ -28,6 +28,7 @@ public:
     int goNext();
     int doParse();
     int setTaskSchedulerType();
+    void setBasicInfo();
     int sendResultToAL(const uint32_t);
 
     void setAgentID(uint32_t aid)

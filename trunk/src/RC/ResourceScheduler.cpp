@@ -1,5 +1,6 @@
 #include "ResourceScheduler.h"
 #include "StrategyManager.h"
+#include "head.h"
 
 #include "common/comm/TaskManager.h"
 

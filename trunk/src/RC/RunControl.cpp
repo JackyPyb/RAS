@@ -3,6 +3,7 @@
 #include "StrategyManager.h"
 #include "NCAgent.h"
 #include "SASAgent.h"
+#include "head.h"
 
 #include "common/comm/TCPListenAgent.h"
 #include "common/comm/AgentManager.h"

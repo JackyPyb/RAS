@@ -1,7 +1,7 @@
 <CONFIG>
 	<MODULE_CONFIG>
 		<MUTABLE>
-			<START_IP></START_IP>
+			<START_IP>192.168.9.80</START_IP>
 			<LISTEN_PORT>
 				<RASNC_RASRC_PORT>10086</RASNC_RASRC_PORT>
                 <RASFWM_RASRC_PORT>10087</RASFWM_RASRC_PORT>
@@ -15,10 +15,10 @@
 				<EpollFD>1000</EpollFD>
 			</Sys>
 			<TimeOut>
-			 	<NCHeartBeatTimeOut>60</NCHeartBeatTimeOut>
-			 	<NCHeartBeatRetryNum>1</NCHeartBeatRetryNum>
-			 	<FWMRootHeartBeatTimeOut>60</FWMRootHeartBeatTimeOut>
-				<FWMRootHeartBeatRetryNum>1</FWMRootHeartBeatRetryNum>
+			 	<NCHeartBeatTimeOut>3</NCHeartBeatTimeOut>
+			 	<NCHeartBeatRetryNum>3</NCHeartBeatRetryNum>
+			 	<FWMRootHeartBeatTimeOut>3</FWMRootHeartBeatTimeOut>
+				<FWMRootHeartBeatRetryNum>3</FWMRootHeartBeatRetryNum>
 			</TimeOut>
 		</UNMUTABLE>
 	</MODULE_CONFIG>

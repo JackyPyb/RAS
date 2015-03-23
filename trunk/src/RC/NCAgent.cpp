@@ -1,4 +1,5 @@
 #include "NCAgent.h"
+#include "head.h"
 
 #include "common/log/log.h"
 
@@ -9,9 +10,12 @@ NCAgent::NCAgent(const TCPSocket &sock,
         const SocketAddress &oppoAddr):
     TCPAgent(sock, oppoAddr)
 {
-    INFO_LOG("NCAgent construction");
     m_NCIP = string(oppoAddr.getIP());        
+
+    #ifdef DEBUG
+    INFO_LOG("NCAgent construction");
     INFO_LOG("NC IP is %s", m_NCIP.c_str());
+    #endif
 }
 
 NCAgent::~NCAgent()

@@ -181,6 +181,8 @@ public:
     bool addPlatformTotalRes(const Resource&);
     bool delPlatformTotalRes(const Resource&);
 
+    void printMemSet() const;
+    void printCPUSet() const;
 private:
     typedef map<string, NCLoadBalance*>::iterator NCMapIter;
     typedef multiset<NCInfo, MemFirstCmp>::iterator MemSetIter;

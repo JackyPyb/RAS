@@ -28,10 +28,21 @@ ConfigManager::~ConfigManager()
 int ConfigManager::configWithXML(const char *configFileName)
 {
     XMLConfig *pXML = new XMLConfig(configFileName);
-    string listenNCPort, listenSASPort, listenFWMPort, listenALPort, 
+    string localIP, listenNCPort, listenSASPort, listenFWMPort, listenALPort, 
            epollMaxFd, NCHeartBeatTimeOut, NCHeartBeatRetryNum, 
            FWMRootHeartBeatTimeOut, FWMRootHeartBeatRetryNum, minNCNum;
     int ret;
+
+    //localIP
+    ret = pXML->getFirstNodeValue(
+            "/CONFIG/MODULE_CONFIG/MUTABLE/START_IP", 
+            localIP);
+    if(ret < 0)
+    {
+        delete pXML;
+        return ret;
+    }
+    m_localIP = localIP;
 
     //listenNCPort
     ret = pXML->getFirstNodeValue(
@@ -199,6 +210,11 @@ unsigned int ConfigManager::getFWMRootHeartBeatRetryNum() const
 unsigned int ConfigManager::getMinNCNum() const
 {
     return m_minNCNum;
+}
+
+string ConfigManager::getLocalIP() const
+{
+    return m_localIP;
 }
 
 }
