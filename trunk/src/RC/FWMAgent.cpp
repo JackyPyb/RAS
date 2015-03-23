@@ -27,6 +27,7 @@ FWMAgent::~FWMAgent()
 
 int FWMAgent::init(void)
 {
+    TCPAgent::init();
     m_pInfoFromFWMToRC = new InfoFromFWMToRC(getID(), m_FWMIP, m_frameworkID, m_fwInstanceID);
     return SUCCESSFUL;
 }

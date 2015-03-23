@@ -154,7 +154,7 @@ void InfoFromNCToRC::sendAckToNC(
     pAgent->sendPackage(msg);
     
     #ifdef DEBUG
-    INFO_LOG("send ack message to NC: cmd is %d", cmd);
+    INFO_LOG("send ack message to NC: cmd is %x", cmd);
     #endif
 }
 

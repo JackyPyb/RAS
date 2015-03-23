@@ -3,6 +3,7 @@
 #include "head.h"
 
 #include "common/comm/TaskManager.h"
+#include "common/comm/AgentManager.h"
 #include "common/log/log.h"
 #include "common/comm/Epoll.h"
 #include "common/Timer/Timer.h"
@@ -116,11 +117,26 @@ int main(int argc, char *argv[])
 
     (RunControl::getInstance())->epollRun();
 
+    AgentManager::destroyInstance();
+    TaskManager::destroyInstance();
+    if(g_pEpoll != NULL)
+    {
+        delete g_pEpoll;
+        g_pEpoll = NULL;
+    }
+
     return 0;
 }
 
 void sig_internal(int sigNo)
 {
     INFO_LOG("Catch SIGINT");
+    if(sigNo == SIGINT)
+    {
+        if(g_pEpoll != NULL)
+        {
+            g_pEpoll->finish();
+        }
+    }
     exit(FAILED);
 }

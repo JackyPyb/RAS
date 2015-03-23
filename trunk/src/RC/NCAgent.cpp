@@ -20,6 +20,9 @@ NCAgent::NCAgent(const TCPSocket &sock,
 
 NCAgent::~NCAgent()
 {
+#ifdef DEBUG
+    INFO_LOG("NCAgent::~NCAgent");
+#endif
     if(m_pInfoFromNCToRC != NULL)
     {
         delete m_pInfoFromNCToRC;
@@ -29,12 +32,20 @@ NCAgent::~NCAgent()
 
 int NCAgent::init(void)
 {
+    TCPAgent::init();
+#ifdef DEBUG
+    INFO_LOG("NCAgent::init");
+#endif
     m_pInfoFromNCToRC = new InfoFromNCToRC(getID(), m_NCIP);
     return SUCCESSFUL;
 }
 
 void NCAgent::readBack(InReq &req)
 {
+#ifndef DEBUG
+    INFO_LOG("NCAgent::readBack");
+#endif
+
     int ret = m_pInfoFromNCToRC->handleNCReq(req);
     if(ret < 0)
     {
