@@ -43,6 +43,7 @@ AC_CONFIG_FILES([Makefile
                  src/protocol/Makefile
                  src/testserver/Makefile
                  src/testclient/Makefile
+                 src/AL/Makefile
                  src/RC/Makefile
                  test/Makefile
                  ])

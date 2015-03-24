@@ -39,7 +39,12 @@ int GetNCFromAll::dispatch(Task *pTask)
         double memRatio = 
             ((double)taskRes.cpuMemSize) / ((double)platformRes.cpuMemSize);
         double cpuRatio = 
-            ((double)taskRes.logicCPUNum) / ((double)taskRes.logicCPUNum);
+            (taskRes.logicCPUNum / platformRes.logicCPUNum);
+
+#ifdef DEBUG
+        INFO_LOG("MemRatio is %f, CPURatio is %f", memRatio, cpuRatio);
+#endif
+
         if(memRatio < cpuRatio)
         {
             mainByMem = false;

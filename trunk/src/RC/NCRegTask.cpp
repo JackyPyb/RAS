@@ -53,6 +53,7 @@ int NCRegTask::goNext()
         {
             #ifdef DEBUG
             INFO_LOG("NCREGTASK_REGISTER");
+            INFO_LOG("NCRegTask::goNext: tid is %llu", getID());
             #endif
 
             ret = (ResourceManager::getInstance())->registerNC(
@@ -151,6 +152,16 @@ int NCRegTask::doParse()
     {
         setNCIP(ncReg.nc_ip());
         setPort(ncReg.nc_port());
+        NCAgent *pAgent = dynamic_cast<NCAgent*>(
+                (AgentManager::getInstance())->get(m_NCAgentID));
+        if(pAgent == NULL)
+        {
+            INFO_LOG("NCRegTask::doParse: NCAgent not found");
+            return FAILED;
+        }
+        pAgent->setIP(ncReg.nc_ip());
+        pAgent->getInfoFromNCToRC()->setIP(ncReg.nc_ip());
+
 
         #ifdef DEBUG
         INFO_LOG("NC register ip is %s, port is %d", 
@@ -207,7 +218,12 @@ int NCRegTask::sendAckToNC(int ret)
         return FAILED;
     }
     else
+    {
+#ifdef DEBUG
+        INFO_LOG("NCRegTask::sendAckToNC: send message to nc, cmd is %x", msg.cmd);
+#endif
         return pAgent->sendPackage(msg);
+    }
 }
 
 void NCRegTask::clearTaskPara()

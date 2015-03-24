@@ -32,6 +32,8 @@ InfoSendToNC::~InfoSendToNC()
 int InfoSendToNC::sendTaskToNC(Task *pTask)
 {
     uint32_t taskType = pTask->getTaskType();
+    string data = "";
+
     switch(taskType)
     {
         case START_FW_ROOT_TASK:
@@ -84,17 +86,27 @@ int InfoSendToNC::sendTaskToNC(Task *pTask)
             INFO_LOG("RC IP %s", ConfigManager::getInstance()->getLocalIP().c_str());
             INFO_LOG("RC port %d", ConfigManager::getInstance()->getFWMListenAddr().getPort());
 #endif
+            INFO_LOG("After print INFO");
 
-            startRootInfo.SerializeToString(&m_data);
+            startRootInfo.SerializeToString(&data);
+            INFO_LOG("after serialize");
+            INFO_LOG("data length is %d", data.length());
+            INFO_LOG("Task ID is %llu", pStartRootTask->getID());
+
             setMsgHeader(MSG_RC_NC_START_FRAMEWORK_ROOT,
-                    m_data.length(),
+                    data.length(),
                     pStartRootTask->getID());
+            INFO_LOG("after setMsgHeader");
             break;            
         }
         default:
             ERROR_LOG("UNKNOWN TASKTYPE");
             break;
     }
+
+#ifdef DEBUG
+    INFO_LOG("InfoSendToNC::sendAckToNC: after SerializeToString");
+#endif
 
     NCAgent *pAgent = dynamic_cast<NCAgent*>(
             (AgentManager::getInstance())->get(m_NCAgentID));
@@ -103,7 +115,10 @@ int InfoSendToNC::sendTaskToNC(Task *pTask)
         ERROR_LOG("InfoSendToNC::sendTaskToNC: ncagent can not found");
         return FAILED;
     }
-    return pAgent->sendPackage(m_msg, m_data);
+#ifdef DEBUG
+    INFO_LOG("InfoSendToNC::sendAckToNC: before sendPackage");
+#endif
+    return pAgent->sendPackage(m_msg, data);
 }
 
 void InfoSendToNC::setMsgHeader(uint32_t cmd, uint32_t len, uint64_t tid)

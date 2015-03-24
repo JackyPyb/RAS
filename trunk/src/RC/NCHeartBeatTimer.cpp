@@ -15,17 +15,21 @@ NCHeartBeatTimer::NCHeartBeatTimer(
         m_NCIP(ncip)
 {
     m_retryNum = (ConfigManager::getInstance())->getNCHeartBeatRetryNum();
+    ERROR_LOG("NCHeartBeatTimer::NCHeartBeatTimer: m_retryNum is %d", 
+            m_retryNum);
 }
 
 NCHeartBeatTimer::~NCHeartBeatTimer()
 {
-
+    ERROR_LOG("NCHeartBeatTimer::~NCHeartBeatTimer");
 }
 
 int NCHeartBeatTimer::doAction()
 {
+    ERROR_LOG("NCHeartBeatTimer::doAction");
     if(m_retryNum > 0)
     {
+        ERROR_LOG("NCHeartBeatTimer::doAction: m_retryNum is %d", m_retryNum);
         m_retryNum--;
             updateExpiredTime(
                     (ConfigManager::getInstance())->getNCHeartBeatTimeOut());

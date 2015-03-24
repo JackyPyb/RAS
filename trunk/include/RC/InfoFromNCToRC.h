@@ -25,6 +25,16 @@ public:
     void sendAckToNC(uint32_t, uint32_t, uint32_t, uint32_t);
     uint64_t mergeID(uint32_t, uint32_t) const;
 
+    void setIP(string ip)
+    {
+        m_NCIP = ip;
+    }
+
+    string getIP() const
+    {
+        return m_NCIP;
+    }
+
 private:
     uint32_t m_NCAgentID;
     string m_NCIP;

@@ -33,12 +33,17 @@ ResourceManager::~ResourceManager()
     m_CPUFirstGPUNotConsider.clear();
 }
 
-NCLoadBalance* ResourceManager::createNCLB(const string &ip, const uint32_t tid)
+NCLoadBalance* ResourceManager::createNCLB(const string &ip, const uint64_t tid)
 {
+#ifdef DEBUG
+    INFO_LOG("ResourceManager::createNCLB: tid is %llu", tid);
+#endif
+
     NCLoadBalance *pNCLB = new NCLoadBalance(ip);
 
     Resource res;
-    NCRegTask * pNCRegTask = dynamic_cast<NCRegTask*>((TaskManager::getInstance())->get(tid));
+    NCRegTask * pNCRegTask = dynamic_cast<NCRegTask*>(
+            (TaskManager::getInstance())->get(tid));
     if(pNCRegTask != NULL)
     {
         multimap<string, Resource> resMap = pNCRegTask->getResourceMap();
@@ -46,16 +51,22 @@ NCLoadBalance* ResourceManager::createNCLB(const string &ip, const uint32_t tid)
         res = iter->second;
         pNCLB->setTotalNCRes(res);
         
-        //to test
+#ifdef DEBUG
         res = pNCLB->getTotalNCRes();
         INFO_LOG("add to nc %s, total res cpu is %f, mem is %d",
                 ip.c_str(), res.logicCPUNum, res.cpuMemSize);
+#endif
+    }
+    else
+    {
+        ERROR_LOG("ResourceManager::createNCLB: task is not NCRegTask");
     }
 
     return pNCLB;
 }
 
-int ResourceManager::registerNC(const string &ip, const uint32_t aid, const uint32_t tid)
+int ResourceManager::registerNC(const string &ip, const uint32_t aid, 
+        const uint64_t tid)
 {
     NCLoadBalance *pNCLB = createNCLB(ip, tid);
     bool ret = addNCLB(ip, pNCLB);
@@ -68,12 +79,20 @@ int ResourceManager::registerNC(const string &ip, const uint32_t aid, const uint
 
     addPlatformTotalRes(pNCLB->getTotalNCRes());
 
-    //to test
+#ifdef DEBUG
     Resource res = getPlatformTotalRes();
     INFO_LOG("Platform total res, cpu is %f, mem is %d",
             res.logicCPUNum, res.cpuMemSize);
+#endif
 
     addNCLBToSets(ip);
+
+#ifdef DEBUG
+    INFO_LOG("MEM SET");
+    printMemSet();
+    INFO_LOG("CPU SET");
+    printCPUSet();
+#endif
 
     if(!pNCLB->isNCOnline())
     {
@@ -107,10 +126,13 @@ int ResourceManager::NCOffLine(const string &ip)
 bool ResourceManager::addNCLBToSets(const string &ip)
 {
     NCLoadBalance* pNCLB = m_NCMap.find(ip)->second;
-    NCInfo ncInfo(ip, pNCLB);
+    NCInfo *pInfo = new NCInfo(ip, pNCLB);
 
-    m_memFirstGPUNotConsider.insert(ncInfo);
-    m_CPUFirstGPUNotConsider.insert(ncInfo);
+    m_memFirstGPUNotConsider.insert(*pInfo);
+    m_CPUFirstGPUNotConsider.insert(*pInfo);
+#ifdef DEBUG
+    INFO_LOG("ResourceManager::addNCLBToSets before return");
+#endif
     return SUCCESSFUL;
 }
 
@@ -122,6 +144,9 @@ bool ResourceManager::deleteNCLBInSets(const string &ip)
     std::pair<MemSetIter, MemSetIter> memRet = 
         m_memFirstGPUNotConsider.equal_range(ncInfo);
 
+#ifdef DEBUG
+    INFO_LOG("ResourceManager::deleteNCLBInSets has ip: %d", memRet.first != memRet.second);
+#endif
     for(; memRet.first != memRet.second; (memRet.first)++)
     {
         if(((memRet.first)->getIP()).compare(ip) == 0)
@@ -141,6 +166,9 @@ bool ResourceManager::deleteNCLBInSets(const string &ip)
         }
     }
 
+#ifdef DEBUG
+    INFO_LOG("ResourceManager::deleteNCLBInSets before return");
+#endif
     return SUCCESSFUL;
 }
 
@@ -212,13 +240,12 @@ string ResourceManager::getSuitableNCByMem(const Resource &res) const
     MemSetIter iter = m_memFirstGPUNotConsider.begin();
     for(; iter != m_memFirstGPUNotConsider.end(); iter++)
     {
-        NCInfo ncInfo = *iter;
-        NCLoadBalance * pNCLB = ncInfo.getNCLB();
+        NCLoadBalance * pNCLB = iter->getNCLB();
         Resource ncRes = pNCLB->getNotApplyRes();
         if((ncRes.cpuMemSize >= res.cpuMemSize) &&
                 (ncRes.logicCPUNum >= res.logicCPUNum))
         {
-            suitableIP = ncInfo.getIP();
+            suitableIP = iter->getIP();
             break;
         }
         else if((ncRes.cpuMemSize < res.cpuMemSize) &&
@@ -244,15 +271,20 @@ string ResourceManager::getSuitableNCByMem(const Resource &res) const
 
 void ResourceManager::printMemSet() const
 {
+#ifdef DEBUG
+    INFO_LOG("ResourceManager::printMemSet: size is %d",
+            m_memFirstGPUNotConsider.size());
+#endif
+
     MemSetIter debugIter = m_memFirstGPUNotConsider.begin();
     for(; debugIter != m_memFirstGPUNotConsider.end(); debugIter++)
     {
-        NCInfo debugNCInfo = *debugIter;
-        NCLoadBalance *pDebugNCLB = debugNCInfo.getNCLB();
+//        NCInfo debugNCInfo = *debugIter;
+        NCLoadBalance *pDebugNCLB = debugIter->getNCLB();
         Resource debugNCRes = pDebugNCLB->getNotApplyRes();
-        string debugIP = debugNCInfo.getIP();
-        INFO_LOG("IP %s, logicCPUNum is %f, cpuMemSize is %d",
-                debugIP.c_str(), debugNCRes.logicCPUNum, debugNCRes.cpuMemSize);
+        string debugIP = debugIter->getIP();
+        INFO_LOG("IP %s, Mem is %d, CPU is %f",
+                debugIP.c_str(), debugNCRes.cpuMemSize, debugNCRes.logicCPUNum);
     }
 }
 
@@ -262,13 +294,12 @@ string ResourceManager::getSuitableNCByCPU(const Resource &res) const
     CPUSetIter iter = m_CPUFirstGPUNotConsider.begin();
     for(; iter != m_CPUFirstGPUNotConsider.end(); iter++)
     {
-        NCInfo ncInfo = *iter;
-        NCLoadBalance * pNCLB = ncInfo.getNCLB();
+        NCLoadBalance * pNCLB = iter->getNCLB();
         Resource ncRes = pNCLB->getNotApplyRes();
         if((ncRes.cpuMemSize >= res.cpuMemSize) &&
                 (ncRes.logicCPUNum >= res.logicCPUNum))
         {
-            suitableIP = ncInfo.getIP();
+            suitableIP = iter->getIP();
             break;
         }
         else if((ncRes.cpuMemSize < res.cpuMemSize) &&
@@ -293,14 +324,19 @@ string ResourceManager::getSuitableNCByCPU(const Resource &res) const
 
 void ResourceManager::printCPUSet() const
 {
+#ifdef DEBUG
+    INFO_LOG("ResourceManager::printCPUSet: size is %d",
+            m_CPUFirstGPUNotConsider.size());
+#endif
+
     CPUSetIter debugIter = m_CPUFirstGPUNotConsider.begin();
     for(; debugIter != m_CPUFirstGPUNotConsider.end(); debugIter++)
     {
-        NCInfo debugNCInfo = *debugIter;
-        NCLoadBalance *pDebugNCLB = debugNCInfo.getNCLB();
+//        NCInfo debugNCInfo = *debugIter;
+        NCLoadBalance *pDebugNCLB = debugIter->getNCLB();
         Resource debugNCRes = pDebugNCLB->getNotApplyRes();
-        INFO_LOG("IP %s, logicCPUNum is %f, cpuMemSize is %d",
-                debugNCInfo.getIP().c_str(),
+        INFO_LOG("IP %s, CPU is %f, Mem is %d",
+                debugIter->getIP().c_str(),
                 debugNCRes.logicCPUNum,
                 debugNCRes.cpuMemSize);
     }

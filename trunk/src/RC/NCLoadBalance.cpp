@@ -1,6 +1,7 @@
 #include <algorithm>
 
 #include "NCLoadBalance.h"
+#include "head.h"
 
 #include "common/comm/Error.h"
 #include "common/log/log.h"
@@ -31,6 +32,9 @@ NCLoadBalance::NCLoadBalance(string ip):
 
 NCLoadBalance::~NCLoadBalance()
 {
+#ifdef DEBUG
+    INFO_LOG("NCLoadBalance::~NCLoadBalance");
+#endif
     m_NCIP.clear();
     if(m_pInfoSendToNC != NULL)
     {
@@ -89,6 +93,7 @@ set<uint32_t> NCLoadBalance::getFWInstance() const
 void NCLoadBalance::setTotalNCRes(const Resource &totalRes)
 {
     m_totalNCRes = totalRes;
+    m_notApplyRes = m_totalNCRes;
 }
 
 Resource NCLoadBalance::getTotalNCRes() const

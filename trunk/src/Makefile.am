@@ -1,1 +1,1 @@
-SUBDIRS=protocol common testserver testclient RC
+SUBDIRS=protocol common testserver testclient RC AL

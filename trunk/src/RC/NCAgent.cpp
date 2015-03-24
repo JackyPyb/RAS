@@ -66,6 +66,9 @@ void NCAgent::setMsgHeader(
 
 int NCAgent::sendPackage(MsgHeader &msg, string data)
 {
+#ifdef DEBUG
+    INFO_LOG("NCAgent:: sendPackage: cmd is %d", msg.cmd);
+#endif
     uint32_t buffLen = HEADER_SIZE + msg.length;
     char *buff = new char[buffLen + 1];
     memset(buff, 0, buffLen + 1);

@@ -49,11 +49,6 @@ int InfoFromNCToRC::handleNCReq(InReq &req)
 
             string data(req.ioBuf, req.m_msgHeader.length);
             ret = doRegister(taskID, data);
-            sendAckToNC(
-                    MSG_NC_RC_REGISTER_ACK,
-                    ret,
-                    req.m_msgHeader.para1,
-                    req.m_msgHeader.para2);
             break;
         }
         case MSG_NC_RC_SEND_HEARTBEAT_AND_MONITOR_INFOMATION:
@@ -154,7 +149,7 @@ void InfoFromNCToRC::sendAckToNC(
     pAgent->sendPackage(msg);
     
     #ifdef DEBUG
-    INFO_LOG("send ack message to NC: cmd is %x", cmd);
+    INFO_LOG("InfoFromNCToRC::sendAckToNC: send ack message to NC: cmd is %x", cmd);
     #endif
 }
 

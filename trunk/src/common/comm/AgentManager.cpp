@@ -17,7 +17,7 @@ struct AgentDeleter
 {
     void operator()( Agent* agent )const
     {
-        printf( "%p\n",agent);
+        //printf( "%p\n",agent);
         if ( agent != NULL)
         {
             delete agent;

@@ -7,8 +7,10 @@
 #include <vector>
 
 #include "Resource.h"
+#include "head.h"
 
 #include "common/sys/Singleton.h"
+#include "common/log/log.h"
 
 #include "NCLoadBalance.h"
 
@@ -38,6 +40,9 @@ public:
 
     ~NCInfo()
     {
+#ifdef DEBUG
+        INFO_LOG("NCInfo::~NCInfo");
+#endif
         m_NCIP.clear();
         if(m_pNCLB != NULL)
         {
@@ -153,8 +158,8 @@ protected:
 public:
     friend class Singleton<ResourceManager>;
 
-    NCLoadBalance* createNCLB(const string&, const uint32_t tid);
-    int registerNC(const string&, const uint32_t, const uint32_t);
+    NCLoadBalance* createNCLB(const string&, const uint64_t tid);
+    int registerNC(const string&, const uint32_t, const uint64_t);
     int unregisterNC(const string&);
     int NCOffLine(const string&);
 

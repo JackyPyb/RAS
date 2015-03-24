@@ -104,12 +104,15 @@ int main(int argc, char *argv[])
             (ConfigManager::getInstance())->getLocalIP().c_str());
     #endif
 
-    g_pTimerManager = new TimerManager();
+    g_pTimerManager = (AgentManager::getInstance()->
+            createAgent<TimerManager>());
     if(g_pTimerManager == NULL)
     {
         ERROR_LOG("main: can not init TimerManager");
         return FAILED;
     }
+
+    g_pTimerManager->init();
 
     TaskManager::getInstance()->setIDGenerator(GeneralIDGenerator());
 
@@ -125,14 +128,16 @@ int main(int argc, char *argv[])
         g_pEpoll = NULL;
     }
 
+    LoggerFactory::getInstance()->clear();
+    LoggerFactory::destroyInstance();
     return 0;
 }
 
 void sig_internal(int sigNo)
 {
-    INFO_LOG("Catch SIGINT");
     if(sigNo == SIGINT)
     {
+        INFO_LOG("Catch SIGINT");
         if(g_pEpoll != NULL)
         {
             g_pEpoll->finish();

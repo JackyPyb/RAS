@@ -24,6 +24,21 @@ public:
             uint32_t len = 0, uint64_t tid = 0);
     int sendPackage(MsgHeader&, string data = "");
 
+    void setIP(string ip)
+    {
+        m_NCIP = ip;
+    }
+
+    string getIP() const
+    {
+        return m_NCIP;
+    }
+
+    InfoFromNCToRC * getInfoFromNCToRC() const
+    {
+        return m_pInfoFromNCToRC;
+    }
+
 private:
     string m_NCIP;
     MsgHeader m_msg;

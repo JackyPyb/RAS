@@ -123,7 +123,7 @@ int NCHeartBeatTask::updateNCInfo()
     actualRemainRes.logicCPUNum = remainResInfo.cpu_num();
     actualRemainRes.cpuMemSize = remainResInfo.cpu_mem_size();
 
-    for(int i = 0; remainResInfo.gpu_resource_info_size(); i++)
+    for(int i = 0; i < remainResInfo.gpu_resource_info_size(); i++)
     {
         RcNcProto::GpuResourceInfo remainGPUInfo = 
             remainResInfo.gpu_resource_info(i);

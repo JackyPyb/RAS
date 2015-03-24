@@ -49,6 +49,7 @@ int StartFWRootTask::goNext()
 #endif
 
             doParse();
+            setTaskState(STARTFWROOTTASK_SET_TASK_SCHEDULER_TYPE);
             goNext();
             break;
         }
@@ -58,6 +59,7 @@ int StartFWRootTask::goNext()
             INFO_LOG("STARTFWROOTTASK_SET_TASK_SCHEDULER_TYPE");
 #endif
             setTaskSchedulerType();
+            setTaskState(STARTFWROOTTASK_CREATE_FWINSTANCE);
             goNext();
             break;
         }
@@ -71,12 +73,14 @@ int StartFWRootTask::goNext()
             INFO_LOG("STARTFWROOTTASK_CREATE_FWINSTANCE");
             INFO_LOG("Created FW instance id is %d", m_fwInstanceID);
 #endif
+            setTaskState(STARTFWROOTTASK_SET_FWINSTANCE_BASIC_INFO);
             goNext();
             break;
         }
         case STARTFWROOTTASK_SET_FWINSTANCE_BASIC_INFO:
         {
             setBasicInfo();
+            setTaskState(STARTFWROOTTASK_SCHEDULER);
             goNext();
             break;
         }
