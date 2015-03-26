@@ -82,8 +82,8 @@ int GetNCFromAll::dispatch(Task *pTask)
                 }
                 uint32_t fwInstanceID = pStartRootTask->getFWInstanceID();
                 pNCLB->addFWInstance(fwInstanceID);
-                pNCLB->addApplyRes(taskRes);
                 (ResourceManager::getInstance())->deleteNCLBInSets(ncIP);
+                pNCLB->addApplyRes(taskRes);
                 (ResourceManager::getInstance())->addNCLBToSets(ncIP);
                 FWInstance *pFWInstance = 
                     (FWIManager::getInstance())->get(fwInstanceID);

@@ -57,7 +57,7 @@ void NCLoadBalance::registerOn(const uint32_t aid)
 
 int NCLoadBalance::sendTaskToNC(Task *pTask)
 {
-    return m_pInfoSendToNC->sendTaskToNC(pTask);
+    return m_pInfoSendToNC->sendTaskToNC(pTask, m_NCAgentID);
 }
 
 void NCLoadBalance::setFWInstance(const set<uint32_t>& FWInstanceSet)

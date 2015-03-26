@@ -23,15 +23,18 @@
 #include "common/comm/TaskManager.h"
 #include "common/log/log.h"
 #include "common/util/util.h"
+#include "ConfigManager.h"
 
 #include <stdlib.h>
 #include <signal.h>
 #include <cstdio>
+#include <unistd.h>
 using util::conv::conv;
 
 Epoll  *g_pEpoll  = NULL;
 ServerAgent *g_pServerAgent = NULL;
 SocketAddress servaddr;
+char * const shortOpt = "hf:";
 
 const int EPOLLSIZE = 1024;
 
@@ -55,7 +58,35 @@ int main(int argc, char *argv[])
 {
     if ( argc != 3 )
     {
-        cout << "Usage: " << argv[0] << " IP Port" << endl;
+        cout << "Usage: " << argv[0] << " -f config_filename" << endl;
+        return FAILED;
+    }
+
+    int ch = 0;
+    const char *pConfigFileName = NULL;
+    while((ch = getopt(argc, argv, shortOpt)) != -1)
+    {
+        switch(ch)
+        {
+            case 'h':
+                std::cout << "Usage: " << argv[0] 
+                    << " -f config_filename" << std::endl;
+                return SUCCESSFUL;
+            case 'f':
+                pConfigFileName = optarg;
+                break;
+            default:
+                std::cerr << "Unknown option: " << char(optopt) << std::endl;
+                return FAILED;
+        }
+    }
+
+    if(NULL == pConfigFileName)
+        pConfigFileName = "config.xml";
+
+    if(FAILED == (ConfigManager::getInstance())->configWithXML(pConfigFileName))
+    {
+        ERROR_LOG("AL : Config init ERROR");
         return FAILED;
     }
 
@@ -68,7 +99,9 @@ int main(int argc, char *argv[])
         return FAILED;
     }
     
-    servaddr.setAddress(argv[1],conv<unsigned short,char*>(argv[2]));
+    servaddr.setAddress(
+            (ConfigManager::getInstance())->getConnectIP().c_str(),
+            (ConfigManager::getInstance())->getConnectPort());
     g_pServerAgent = (AgentManager::getInstance())->createAgent<ServerAgent>(servaddr);
     g_pServerAgent->init();
 

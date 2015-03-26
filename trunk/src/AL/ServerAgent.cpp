@@ -19,12 +19,15 @@
 #include "ServerAgent.h"
 #include "protocol/AlProtocol.pb.h"
 #include "protocol/RASCmdCode.h"
+#include "ConfigManager.h"
 
 #include "common/comm/Epoll.h"
 #include "common/comm/SocketAddress.h"
 #include "common/log/log.h"
 
 #include <iostream>
+#include <stdint.h>
+#include <stdlib.h>
 
 ServerAgent::ServerAgent()
 {
@@ -65,18 +68,26 @@ ServerAgent::connectAfter( bool bConnect)
     if (bConnect )
     {
         AlProto::StartRootModule startRootInfo; 
-        startRootInfo.set_framework_id(1);
-        startRootInfo.set_image_lable("imageLable1");
-        startRootInfo.set_module_name("DM");
-        startRootInfo.set_location_file_path("/root/xxx/a");
-        startRootInfo.set_nc_ip("*");
+        startRootInfo.set_framework_id(
+                (ConfigManager::getInstance())->getFrameworkID());
+        startRootInfo.set_image_lable(
+                (ConfigManager::getInstance())->getImageLable());
+        startRootInfo.set_module_name(
+                (ConfigManager::getInstance())->getModuleName());
+        startRootInfo.set_location_file_path(
+                (ConfigManager::getInstance())->getLocationFilePath());
+        startRootInfo.set_nc_ip(
+                (ConfigManager::getInstance())->getNCIP());
         
         AlProto::ResourceInfo *resInfo = 
             startRootInfo.mutable_request_resource_size();
-        resInfo->set_cpu_num(8);
-        resInfo->set_cpu_mem_size(50);
+        resInfo->set_cpu_num(
+                (ConfigManager::getInstance())->getCPUNum());
+        resInfo->set_cpu_mem_size(
+                (ConfigManager::getInstance())->getCPUMemSize());
         
-        startRootInfo.set_listen_num(3);
+        startRootInfo.set_listen_num(
+                (ConfigManager::getInstance())->getListenNum());
 
         startRootInfo.SerializeToString(&m_data);
         MsgHeader msg;
@@ -106,7 +117,7 @@ ServerAgent::readBack(InReq &req)
             ackInfo.ParseFromString(data);
             std::cout << "Framework Instance ID is " 
                 << ackInfo.framework_instance_id() << std::endl;
-
+            exit(0);
             break;
         }
         default:

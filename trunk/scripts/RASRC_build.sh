@@ -7,7 +7,7 @@ autoconf
 automake --add-missing
 
 cd build
-../configure
+../configure --enable-debug
 cd src/common
 make
 cd ../protocol

@@ -20,20 +20,6 @@ char * const shortOpt = "hf:";
 TimerManager *g_pTimerManager = NULL;
 Epoll *g_pEpoll = NULL;
 
-class GeneralIDGenerator
-{
-    public:
-        GeneralIDGenerator():m_ID(0){}
-        uint64_t operator()(void)
-        {
-            uint64_t msec = time(NULL) << 32;
-            ++m_ID;
-            return (msec | m_ID);
-        }
-    private:
-        uint64_t m_ID;
-};
-
 void sig_internal(int sigNo);
 
 int main(int argc, char *argv[])
@@ -114,7 +100,7 @@ int main(int argc, char *argv[])
 
     g_pTimerManager->init();
 
-    TaskManager::getInstance()->setIDGenerator(GeneralIDGenerator());
+//    TaskManager::getInstance()->setIDGenerator(GeneralIDGenerator());
 
     (RunControl::getInstance())->run();
 

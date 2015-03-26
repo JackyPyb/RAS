@@ -14,8 +14,12 @@ public:
     InfoSendToNC(uint32_t);
     ~InfoSendToNC();
 
-    void setMsgHeader(uint32_t, uint32_t, uint64_t);
-    int sendTaskToNC(Task*);
+    void setMsgHeader(MsgHeader &, uint32_t, uint32_t, uint64_t);
+    int sendTaskToNC(Task*, uint32_t);
+    uint32_t getNCAgentID() const
+    {
+        return m_NCAgentID;
+    }
 
 private:
     uint32_t m_NCAgentID;

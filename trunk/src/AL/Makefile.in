@@ -67,7 +67,8 @@ LTLIBRARIES = $(noinst_LTLIBRARIES)
 __top_builddir__src_AL_libal_la_DEPENDENCIES =  \
 	$(top_srcdir)/lib/libcommon.la \
 	$(top_srcdir)/lib/libprotocol.la
-am___top_builddir__src_AL_libal_la_OBJECTS = ServerAgent.lo
+am___top_builddir__src_AL_libal_la_OBJECTS = ServerAgent.lo \
+	ConfigManager.lo
 __top_builddir__src_AL_libal_la_OBJECTS =  \
 	$(am___top_builddir__src_AL_libal_la_OBJECTS)
 am__dirstamp = $(am__leading_dot)dirstamp
@@ -235,7 +236,9 @@ __top_srcdir__bin_AL_LDADD = $(top_builddir)/src/AL/libal.la
 noinst_LTLIBRARIES = $(top_builddir)/src/AL/libal.la
 __top_builddir__src_AL_libal_la_SOURCES = \
 										  ServerAgent.h \
-										  ServerAgent.cpp
+										  ServerAgent.cpp \
+										  ConfigManager.h \
+										  ConfigManager.cpp
 
 __top_builddir__src_AL_libal_la_LIBADD = \
 									$(top_srcdir)/lib/libcommon.la \
@@ -348,6 +351,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ConfigManager.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ServerAgent.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@
 

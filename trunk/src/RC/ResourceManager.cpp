@@ -138,39 +138,64 @@ bool ResourceManager::addNCLBToSets(const string &ip)
 
 bool ResourceManager::deleteNCLBInSets(const string &ip)
 {
-    NCLoadBalance* pNCLB = m_NCMap.find(ip)->second;
-    NCInfo ncInfo(ip, pNCLB);
-
-    std::pair<MemSetIter, MemSetIter> memRet = 
-        m_memFirstGPUNotConsider.equal_range(ncInfo);
-
-#ifdef DEBUG
-    INFO_LOG("ResourceManager::deleteNCLBInSets has ip: %d", memRet.first != memRet.second);
-#endif
-    for(; memRet.first != memRet.second; (memRet.first)++)
+    MemSetIter memIter = m_memFirstGPUNotConsider.begin();
+    for(; memIter != m_memFirstGPUNotConsider.end(); memIter++)
     {
-        if(((memRet.first)->getIP()).compare(ip) == 0)
+        if(ip.compare(memIter->getIP()) == 0)
         {
-            m_memFirstGPUNotConsider.erase(memRet.first);
-        }
-    }
-    
-    std::pair<CPUSetIter, CPUSetIter> cpuRet = 
-        m_CPUFirstGPUNotConsider.equal_range(ncInfo);
-
-    for(; cpuRet.first != cpuRet.second; (cpuRet.first)++)
-    {
-        if(((cpuRet.first)->getIP()).compare(ip) == 0)
-        {
-            m_CPUFirstGPUNotConsider.erase(cpuRet.first);
+            m_memFirstGPUNotConsider.erase(memIter);
+            break;
         }
     }
 
-#ifdef DEBUG
-    INFO_LOG("ResourceManager::deleteNCLBInSets before return");
-#endif
+    CPUSetIter cpuIter = m_CPUFirstGPUNotConsider.begin();
+    for(; cpuIter != m_CPUFirstGPUNotConsider.end(); cpuIter++)
+    {
+        if(ip.compare(cpuIter->getIP()) == 0)
+        {
+            m_CPUFirstGPUNotConsider.erase(cpuIter);
+            break;
+        }
+    }
+
     return SUCCESSFUL;
 }
+
+//bool ResourceManager::deleteNCLBInSets(const string &ip)
+//{
+//    NCLoadBalance* pNCLB = m_NCMap.find(ip)->second;
+//    NCInfo ncInfo(ip, pNCLB);
+//
+//    std::pair<MemSetIter, MemSetIter> memRet = 
+//        m_memFirstGPUNotConsider.equal_range(ncInfo);
+//
+//#ifdef DEBUG
+//    INFO_LOG("ResourceManager::deleteNCLBInSets has ip: %d", memRet.first != memRet.second);
+//#endif
+//    for(; memRet.first != memRet.second; (memRet.first)++)
+//    {
+//        if(((memRet.first)->getIP()).compare(ip) == 0)
+//        {
+//            m_memFirstGPUNotConsider.erase(memRet.first);
+//        }
+//    }
+//    
+//    std::pair<CPUSetIter, CPUSetIter> cpuRet = 
+//        m_CPUFirstGPUNotConsider.equal_range(ncInfo);
+//
+//    for(; cpuRet.first != cpuRet.second; (cpuRet.first)++)
+//    {
+//        if(((cpuRet.first)->getIP()).compare(ip) == 0)
+//        {
+//            m_CPUFirstGPUNotConsider.erase(cpuRet.first);
+//        }
+//    }
+//
+//#ifdef DEBUG
+//    INFO_LOG("ResourceManager::deleteNCLBInSets before return");
+//#endif
+//    return SUCCESSFUL;
+//}
 
 bool ResourceManager::changeNCLBInSets(const string &ip)
 {

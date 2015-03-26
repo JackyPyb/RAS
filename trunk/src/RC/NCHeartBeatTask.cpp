@@ -18,6 +18,9 @@ namespace rc
 NCHeartBeatTask::NCHeartBeatTask():
     m_NCIP("")
 {
+#ifdef DEBUG
+    INFO_LOG("NCHeartBeatTask::NCHeartBeatTask");
+#endif
     setTaskState(NCHEARTBEATTASK_UPDATE_NCINFO);
     setDataString("");
     setTaskType(NC_HEART_BEAT_TASK);
@@ -98,6 +101,9 @@ int NCHeartBeatTask::updateNCInfo()
         monitorInfo.usage_machine_resource_info();
     actualUseRes.logicCPUNum = usedResInfo.cpu_num();
     actualUseRes.cpuMemSize = usedResInfo.cpu_mem_size();
+#ifdef DEBUG
+    INFO_LOG("parse::: usedResInfo.cpu_num is %f, mem is %d", usedResInfo.cpu_num(), usedResInfo.cpu_mem_size());
+#endif
 
     for(int i = 0; i < usedResInfo.gpu_resource_info_size(); i++)
     {
@@ -166,7 +172,7 @@ int NCHeartBeatTask::updateFWIInfo()
     {
         RcNcProto::ContainerResourceInfo usedFWResInfo =
             monitorInfo.container_usage_resource_info(i);
-        uint32_t fwID = usedFWResInfo.framework_instance_id();
+        uint32_t fwInstanceID = usedFWResInfo.framework_instance_id();
 
         Resource res;
         RcNcProto::ResourceInfo resInfo = usedFWResInfo.resource_info();
@@ -180,7 +186,7 @@ int NCHeartBeatTask::updateFWIInfo()
             res.GPUInfo[name] = fwGPUInfo.gpu_mem_size();
         }
 
-        FWInstance *pFWInstance = (FWIManager::getInstance())->get(fwID);
+        FWInstance *pFWInstance = (FWIManager::getInstance())->get(fwInstanceID);
         if(pFWInstance == NULL)
         {
             ERROR_LOG(
@@ -193,21 +199,21 @@ int NCHeartBeatTask::updateFWIInfo()
         Resource totalUsedRes = pFWInstance->getTotalActualUseRes();
 
         #ifdef DEBUG
-        INFO_LOG("NC %s, FW ID %d, actual use res is \n \
+        INFO_LOG("NC %s, FW Instance ID %d, actual use res is \n \
                 logicCPUNum is %f, cpuMemSize is %d",
                 m_NCIP.c_str(),
-                fwID,
+                fwInstanceID,
                 res.logicCPUNum,
                 res.cpuMemSize);
-        INFO_LOG("NC %s , FW ID %d, old actual use res is \n \
+        INFO_LOG("NC %s , FW Instance ID %d, old actual use res is \n \
                 logicCPUNum is %f, cpuMemSize is %d",
                 m_NCIP.c_str(),
-                fwID,
+                fwInstanceID,
                 oldRes.logicCPUNum,
                 oldRes.cpuMemSize);
-        INFO_LOG("FW ID %d ---OLD--- total actual res is \n \
+        INFO_LOG("FW Instance ID %d ---OLD--- total actual res is \n \
                 logicCPUNum is %f, cpuMemSize is %d",
-                fwID,
+                fwInstanceID,
                 totalUsedRes.logicCPUNum,
                 totalUsedRes.cpuMemSize);
         #endif
@@ -218,9 +224,9 @@ int NCHeartBeatTask::updateFWIInfo()
 
         #ifdef DEBUG
         Resource newTotalUsedRes = pFWInstance->getTotalActualUseRes();
-        INFO_LOG("FW ID %d ---NEW--- total actual res is \n \
+        INFO_LOG("FW Instance ID %d ---NEW--- total actual res is \n \
                 logicCPUNum is %f, cpuMemSize is %d",
-                fwID,
+                fwInstanceID,
                 newTotalUsedRes.logicCPUNum,
                 newTotalUsedRes.cpuMemSize);
         #endif

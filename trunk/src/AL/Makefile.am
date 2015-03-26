@@ -9,7 +9,9 @@ __top_srcdir__bin_AL_LDADD = $(top_builddir)/src/AL/libal.la
 noinst_LTLIBRARIES = $(top_builddir)/src/AL/libal.la
 __top_builddir__src_AL_libal_la_SOURCES = \
 										  ServerAgent.h \
-										  ServerAgent.cpp
+										  ServerAgent.cpp \
+										  ConfigManager.h \
+										  ConfigManager.cpp
 __top_builddir__src_AL_libal_la_LIBADD = \
 									$(top_srcdir)/lib/libcommon.la \
 			                     	$(top_srcdir)/lib/libprotocol.la

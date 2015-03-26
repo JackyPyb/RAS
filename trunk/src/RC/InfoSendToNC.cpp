@@ -29,10 +29,11 @@ InfoSendToNC::~InfoSendToNC()
     m_data.clear();
 }
 
-int InfoSendToNC::sendTaskToNC(Task *pTask)
+int InfoSendToNC::sendTaskToNC(Task *pTask, uint32_t agentID)
 {
     uint32_t taskType = pTask->getTaskType();
     string data = "";
+    MsgHeader msgHeader;
 
     switch(taskType)
     {
@@ -85,18 +86,14 @@ int InfoSendToNC::sendTaskToNC(Task *pTask)
             INFO_LOG("listen num %d", (pStartRootTask->m_startRootModuleInfo).listen_num());
             INFO_LOG("RC IP %s", ConfigManager::getInstance()->getLocalIP().c_str());
             INFO_LOG("RC port %d", ConfigManager::getInstance()->getFWMListenAddr().getPort());
+            INFO_LOG("StartFWRootTask task id is %d", pStartRootTask->getID());
 #endif
-            INFO_LOG("After print INFO");
 
             startRootInfo.SerializeToString(&data);
-            INFO_LOG("after serialize");
-            INFO_LOG("data length is %d", data.length());
-            INFO_LOG("Task ID is %llu", pStartRootTask->getID());
 
-            setMsgHeader(MSG_RC_NC_START_FRAMEWORK_ROOT,
+            setMsgHeader( msgHeader, MSG_RC_NC_START_FRAMEWORK_ROOT,
                     data.length(),
                     pStartRootTask->getID());
-            INFO_LOG("after setMsgHeader");
             break;            
         }
         default:
@@ -104,29 +101,25 @@ int InfoSendToNC::sendTaskToNC(Task *pTask)
             break;
     }
 
-#ifdef DEBUG
-    INFO_LOG("InfoSendToNC::sendAckToNC: after SerializeToString");
-#endif
-
     NCAgent *pAgent = dynamic_cast<NCAgent*>(
-            (AgentManager::getInstance())->get(m_NCAgentID));
+            (AgentManager::getInstance())->get(agentID));
+
     if(pAgent == NULL)
     {
         ERROR_LOG("InfoSendToNC::sendTaskToNC: ncagent can not found");
         return FAILED;
     }
-#ifdef DEBUG
-    INFO_LOG("InfoSendToNC::sendAckToNC: before sendPackage");
-#endif
-    return pAgent->sendPackage(m_msg, data);
+
+    return pAgent->sendPackage(msgHeader, data);
 }
 
-void InfoSendToNC::setMsgHeader(uint32_t cmd, uint32_t len, uint64_t tid)
+void InfoSendToNC::setMsgHeader(MsgHeader &msgHeader, uint32_t cmd, 
+        uint32_t len, uint64_t tid)
 {
-    m_msg.cmd = cmd;
-    m_msg.length = len;
-    m_msg.para1 = tid;
-    m_msg.para2 = tid >> 32;
+    msgHeader.cmd = cmd;
+    msgHeader.length = len;
+    msgHeader.para1 = tid;
+    msgHeader.para2 = tid >> 32;
 }
 
 }

@@ -44,11 +44,6 @@ public:
         INFO_LOG("NCInfo::~NCInfo");
 #endif
         m_NCIP.clear();
-        if(m_pNCLB != NULL)
-        {
-            delete m_pNCLB;
-            m_pNCLB = NULL;
-        }
     }
 
     void setNCLB(NCLoadBalance *pNCLB)
