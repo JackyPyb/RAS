@@ -102,7 +102,8 @@ int NCHeartBeatTask::updateNCInfo()
     actualUseRes.logicCPUNum = usedResInfo.cpu_num();
     actualUseRes.cpuMemSize = usedResInfo.cpu_mem_size();
 #ifdef DEBUG
-    INFO_LOG("parse::: usedResInfo.cpu_num is %f, mem is %d", usedResInfo.cpu_num(), usedResInfo.cpu_mem_size());
+    INFO_LOG("parse::: usedResInfo.cpu_num is %f, mem is %d", 
+            usedResInfo.cpu_num(), usedResInfo.cpu_mem_size());
 #endif
 
     for(int i = 0; i < usedResInfo.gpu_resource_info_size(); i++)
